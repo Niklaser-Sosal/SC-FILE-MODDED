@@ -1,0 +1,62 @@
+//------------------------------------------------
+// File: MCAL.bt
+// Authors: onejeuu
+// Version: 2.0
+// Purpose: Parse animations library.
+// Category: STALCRAFT
+// File Mask: *.mcal
+// ID Bytes: 4D 43 41 4C // MCAL
+//------------------------------------------------
+
+
+// Define Byte Order
+
+LittleEndian();
+
+
+// Length Prefixed String
+
+typedef struct {
+    ushort size <bgcolor=cDkYellow>;
+    if ( size > 0 ) char data[size] <bgcolor=cYellow, optimize=false>;
+} String <read=(exists(data) ? data : "")>;
+
+
+// Vectors
+
+float nS(short i) { return (float)i / 32767.0f; } // NormalizeShort
+
+typedef struct { short x, y, z; } Vec3s <read=Str("%f, %f, %f", nS(x), nS(y), nS(z))>;
+typedef struct { short x, y, z, w; } Vec4s <read=Str("%f, %f, %f, %f", nS(x), nS(y), nS(z), nS(w))>;
+
+
+// Header
+
+char signature[4] <name="Signature", fgcolor=cGreen>;
+float version <name="Version", fgcolor=cRed>;
+
+
+// Animations
+
+struct BoneTransform {
+    Vec4s rotation <name="Rotation", bgcolor=cGray>;
+    Vec3s translation <name="Translation", bgcolor=cWhite>;
+};
+
+struct KeyFrame {
+    if ( boneCount > 0 ) BoneTransform transforms[boneCount];
+};
+
+typedef struct {
+    String name <name="Name">;
+    int frameCount <name="Keyframe Count", bgcolor=cGreen>;
+    float frameInterval <name="Frame Interval", fgcolor=cPurple>;
+    if ( frameCount > 0 ) KeyFrame frame[frameCount] <optimize=false>;
+} Clip <read=(exists(this.name.data) ? this.name.data : "")>;
+
+struct Animation {
+    uint boneCount <name="Bone Count", bgcolor=cPurple>;
+    ubyte unknown <fgcolor=cBlack, comment="Often 64. Maybe some buffer size?">;
+    int  clipCount <name="Clips Count", bgcolor=cBlue>;
+    if ( clipCount > 0 ) Clip clips[clipCount] <name="Clip", optimize=false>;
+} animation <name="Animation">;

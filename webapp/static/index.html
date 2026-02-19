@@ -1,0 +1,897 @@
+﻿<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SC-FILE:MODDED</title>
+    <meta name="theme-color" content="#0B0B0B" />
+    <link rel="icon" href="/static/app_icon.png" type="image/png" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <img class="brand-icon" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
+          <div class="brand-text">
+            <div class="brand-title">SC-FILE:MODDED</div>
+            <div class="brand-subtitle">By • Niklaser</div>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item active" data-view="home" data-title-key="nav_home">
+            <svg class="icon"><use href="/static/icons.svg#home"></use></svg>
+            <span data-i18n="nav_home">Главная</span>
+          </button>
+          <button class="nav-item" data-view="convert" data-title-key="nav_convert">
+            <svg class="icon"><use href="/static/icons.svg#arrows"></use></svg>
+            <span data-i18n="nav_convert">Конвертер</span>
+          </button>
+          <button class="nav-item" data-view="mapmerge" data-title-key="nav_mapmerge">
+            <svg class="icon"><use href="/static/icons.svg#map"></use></svg>
+            <span data-i18n="nav_mapmerge">Map Merge</span>
+          </button>
+          <button class="nav-item" data-view="settings" data-title-key="nav_settings">
+            <svg class="icon"><use href="/static/icons.svg#settings"></use></svg>
+            <span data-i18n="nav_settings">Настройки</span>
+          </button>
+          <button class="nav-item" data-view="logs" data-title-key="nav_logs">
+            <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+            <span data-i18n="nav_logs">Логи</span>
+          </button>
+          <button class="nav-item" data-view="about" data-title-key="nav_about">
+            <svg class="icon"><use href="/static/icons.svg#info"></use></svg>
+            <span data-i18n="nav_about">О программе</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="pill" id="healthBadge">offline</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="topbar-title" id="viewTitle">Главная</div>
+          <div class="topbar-actions">
+            <div class="segmented topbar-lang" id="topLangToggle" aria-label="Language">
+              <label class="seg">
+                <input type="radio" name="topLang" value="ru" checked />
+                <span>RU</span>
+              </label>
+              <label class="seg">
+                <input type="radio" name="topLang" value="en" />
+                <span>EN</span>
+              </label>
+            </div>
+            <div class="pill subtle" id="appInfo">—</div>
+          </div>
+        </header>
+
+        <section class="view active" id="view-home">
+          <div class="hero">
+            <div class="hero-title">SC-FILE:MODDED</div>
+            <div class="hero-sub" data-i18n="home_sub">
+              Конвертация ассетов STALCRAFT:X в стандартные форматы с логами, пакетной обработкой и кастомизацией.
+            </div>
+            <div class="row wrap">
+              <button class="btn primary" id="homeGoConvert">
+                <svg class="icon"><use href="/static/icons.svg#arrows"></use></svg>
+                <span data-i18n="home_open_convert">Открыть конвертер</span>
+              </button>
+              <button class="btn" id="homeGoMapmerge">
+                <svg class="icon"><use href="/static/icons.svg#map"></use></svg>
+                <span data-i18n="nav_mapmerge">Map Merge</span>
+              </button>
+              <button class="btn subtle" id="homeGoLogs">
+                <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+                <span data-i18n="nav_logs">Логи</span>
+              </button>
+              <button class="btn ghost" id="homeGoSettings">
+                <svg class="icon"><use href="/static/icons.svg#settings"></use></svg>
+                <span data-i18n="nav_settings">Настройки</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="home-grid home-grid-wide">
+            <div class="card home-menu">
+              <div class="home-menu-head">
+                <div>
+                  <div class="card-title" data-i18n="home_menu_title">Главное меню</div>
+                  <div class="home-menu-sub" data-i18n="home_menu_sub">
+                    Быстрый доступ к основным разделам и действиям.
+                  </div>
+                </div>
+                <div class="home-menu-badges">
+                  <span class="badge"><span data-i18n="home_badge_fast">Fast</span></span>
+                  <span class="badge"><span data-i18n="home_badge_safe">Local</span></span>
+                  <span class="badge"><span data-i18n="home_badge_ui">Web UI</span></span>
+                </div>
+              </div>
+              <div class="menu-stack">
+                <button class="menu-wide primary" type="button" id="menuConvert">
+                  <div class="menu-left">
+                    <svg class="icon"><use href="/static/icons.svg#arrows"></use></svg>
+                    <div class="menu-body">
+                      <div class="menu-title" data-i18n="nav_convert">Конвертер</div>
+                      <div class="menu-desc" data-i18n="home_menu_convert_desc">Пакетная конвертация ассетов в ZIP или папку.</div>
+                    </div>
+                  </div>
+                  <span class="menu-chip" data-i18n="home_chip_main">Главное</span>
+                </button>
+                <button class="menu-wide" type="button" id="menuMapmerge">
+                  <div class="menu-left">
+                    <svg class="icon"><use href="/static/icons.svg#map"></use></svg>
+                    <div class="menu-body">
+                      <div class="menu-title" data-i18n="nav_mapmerge">Map Merge</div>
+                      <div class="menu-desc" data-i18n="home_menu_mapmerge_desc">Склейка регионов карты в изображения (PNG/JPG/WebP).</div>
+                    </div>
+                  </div>
+                  <span class="menu-chip">PNG/JPG</span>
+                </button>
+                <div class="menu-row">
+                  <button class="menu-wide" type="button" id="menuSettings">
+                    <div class="menu-left">
+                      <svg class="icon"><use href="/static/icons.svg#settings"></use></svg>
+                      <div class="menu-body">
+                        <div class="menu-title" data-i18n="nav_settings">Настройки</div>
+                        <div class="menu-desc" data-i18n="home_menu_settings_desc">Темы, фон, язык, папки вывода и поведение ZIP.</div>
+                      </div>
+                    </div>
+                  </button>
+                  <button class="menu-wide" type="button" id="menuLogs">
+                    <div class="menu-left">
+                      <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+                      <div class="menu-body">
+                        <div class="menu-title" data-i18n="nav_logs">Логи</div>
+                        <div class="menu-desc" data-i18n="home_menu_logs_desc">Если что-то пошло не так — начинай с логов.</div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+              <div class="hint" data-i18n-html="home_menu_info">
+                • По умолчанию ZIP кладётся в <b>Загрузки</b>.<br />
+                • Для больших пакетов конвертация может занять время.<br />
+                • Если появились какие-то ошибки, обязательно напишите об этом!
+              </div>
+            </div>
+
+            <div class="home-side">
+              <div class="anime-raw-card">
+                <div class="anime-raw">
+                  <div class="anime-logo" aria-hidden="true"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-title" data-i18n="home_quick_title">Быстрый старт</div>
+                <div class="hint" data-i18n-html="home_quick_body">
+                  1) Открой <b>Конвертер</b> → 2) Добавь файлы/папку → 3) Выбери формат и опции → 4) Конвертируй → 5) Открой ZIP/папку.
+                </div>
+                <div class="divider"></div>
+                <div class="hint" data-i18n-html="home_support_body">
+                  <b>Конвертер</b>: <span class="mono">.mcsb .mcsa .mcvd .ol .mic .texarr</span> и NBT<br />
+                  <b>Map Merge</b>: <span class="mono">.ol .mic</span> (например <span class="mono">r-5_10.ol</span>)
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="easter">
+            <div class="easter-line" data-i18n="home_easter_1">Fuck you Spectrum SC</div>
+            <div class="easter-line" data-i18n="home_easter_2">Fuck you Artemiy Lapa</div>
+            <div class="easter-line" data-i18n="home_easter_3">Fuck you ИскательМЧ</div>
+          </div>
+        </section>
+
+        <section class="view" id="view-convert">
+          <div class="grid">
+            <div class="card">
+              <div class="card-title" data-i18n="convert_files_title">Файлы</div>
+              <div class="row">
+                <button class="btn" id="btnAddFiles">
+                  <svg class="icon"><use href="/static/icons.svg#file-plus"></use></svg>
+                  <span data-i18n="btn_add_files">Добавить файлы</span>
+                </button>
+                <button class="btn" id="btnAddFolder">
+                  <svg class="icon"><use href="/static/icons.svg#folder-plus"></use></svg>
+                  <span data-i18n="btn_add_folder">Добавить папку</span>
+                </button>
+                <button class="btn ghost" id="btnClearFiles">
+                  <svg class="icon"><use href="/static/icons.svg#trash"></use></svg>
+                  <span data-i18n="btn_clear">Очистить</span>
+                </button>
+              </div>
+              <input id="inputFiles" type="file" multiple hidden />
+              <input id="inputFolder" type="file" multiple webkitdirectory hidden />
+
+              <div class="hint" data-i18n-html="convert_support_hint">
+                Поддержка: <span class="mono">.mcsb .mcsa .mcvd .ol .mic .texarr</span> и NBT
+              </div>
+
+              <div class="file-list dropzone" id="fileList" data-drop="convert"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title" data-i18n="convert_options_title">Опции</div>
+
+              <div class="form">
+                <div class="form-row">
+                  <label class="label" data-i18n="label_output">Вывод</label>
+                  <div class="segmented">
+                    <label class="seg">
+                      <input type="radio" name="outputMode" value="zip" checked />
+                      <span>ZIP</span>
+                    </label>
+                    <label class="seg">
+                      <input type="radio" name="outputMode" value="folder" />
+                      <span data-i18n="output_folder">Папка</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-row" id="rowOutputDir">
+                  <label class="label" for="outputDir" data-i18n="label_folder">Папка</label>
+                  <input class="input" id="outputDir" placeholder="Например: D:\\output\\scfile" data-i18n-placeholder="ph_folder_path" />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" data-i18n="label_models">Модели</label>
+                  <div class="chips">
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="glb" checked /> GLB</label>
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="obj" /> OBJ</label>
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="dae" /> DAE</label>
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="ms3d" /> MS3D</label>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" data-i18n="set_flags">Флаги</label>
+                  <div class="checks">
+                    <label class="check"><input type="checkbox" id="optPreserve" checked /> <span data-i18n="flag_preserve">Сохранять структуру</span></label>
+                    <label class="check"><input type="checkbox" id="optUnique" checked /> <span data-i18n="flag_unique">Уникальные имена</span></label>
+                    <label class="check"><input type="checkbox" id="optSkeleton" checked /> <span data-i18n="flag_skeleton">Скелет</span></label>
+                    <label class="check"><input type="checkbox" id="optAnimation" /> <span data-i18n="flag_anim">Анимации</span></label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button class="btn primary" id="btnStartConvert">
+                    <svg class="icon"><use href="/static/icons.svg#play"></use></svg>
+                    <span data-i18n="btn_convert">Конвертировать</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" data-i18n="task_title">Задача</div>
+            <div class="status" id="taskStatus" data-i18n="task_none">Нет активной задачи</div>
+
+            <div class="progress">
+              <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="row wrap">
+              <a class="btn" id="btnDownloadZip" href="#" download style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#download"></use></svg>
+                <span data-i18n="btn_download_zip">Скачать ZIP</span>
+              </a>
+              <button class="btn" id="btnOpenZip" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                <span data-i18n="btn_open_zip">Открыть ZIP</span>
+              </button>
+              <button class="btn" id="btnOpenOutput" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                <span data-i18n="btn_open_folder">Открыть папку</span>
+              </button>
+              <button class="btn ghost" id="btnStopPoll" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+                <span data-i18n="btn_hide_progress">Скрыть прогресс</span>
+              </button>
+            </div>
+
+            <div class="split">
+              <div>
+                <div class="subtle-title" data-i18n="results_title">Результаты</div>
+                <div class="outputs" id="outputsList"></div>
+              </div>
+              <div>
+                <div class="subtle-title" data-i18n="nav_logs">Логи</div>
+                <pre class="logbox" id="taskLogs"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-mapmerge">
+          <div class="grid">
+            <div class="card">
+              <div class="card-title" data-i18n="mm_files_title">Файлы карты</div>
+              <div class="row">
+                <button class="btn" id="mmBtnAddFiles">
+                  <svg class="icon"><use href="/static/icons.svg#file-plus"></use></svg>
+                  <span data-i18n="btn_add_files">Добавить файлы</span>
+                </button>
+                <button class="btn" id="mmBtnAddFolder">
+                  <svg class="icon"><use href="/static/icons.svg#folder-plus"></use></svg>
+                  <span data-i18n="btn_add_folder">Добавить папку</span>
+                </button>
+                <button class="btn ghost" id="mmBtnClearFiles">
+                  <svg class="icon"><use href="/static/icons.svg#trash"></use></svg>
+                  <span data-i18n="btn_clear">Очистить</span>
+                </button>
+              </div>
+              <input id="mmInputFiles" type="file" multiple hidden />
+              <input id="mmInputFolder" type="file" multiple webkitdirectory hidden />
+
+              <div class="hint" data-i18n-html="mm_support_hint">
+                Поддержка: <span class="mono">.ol .mic</span> (файлы регионов, например <span class="mono">r-5_10.ol</span
+                >)
+              </div>
+
+              <div class="file-list dropzone" id="mmFileList" data-drop="mapmerge"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title" data-i18n="mm_options_title">Опции</div>
+
+              <div class="form">
+                <div class="form-row">
+                  <label class="label" for="mmSuffix" data-i18n="mm_format">Формат</label>
+                  <select class="input" id="mmSuffix">
+                    <option value="jpg">JPG</option>
+                    <option value="png">PNG</option>
+                    <option value="webp">WEBP</option>
+                    <option value="tiff">TIFF</option>
+                    <option value="bmp">BMP</option>
+                    <option value="dds">DDS</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="mmPreset" data-i18n="mm_preset">Preset</label>
+                  <select class="input" id="mmPreset">
+                    <option value="">—</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="mmFilename" data-i18n="mm_name">Имя</label>
+                  <input class="input" id="mmFilename" placeholder="Map %Y.%m.%d" data-i18n-placeholder="ph_mm_name" />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="mmLimit" data-i18n="mm_limit">Лимит</label>
+                  <input class="input" id="mmLimit" type="number" value="1000000000" />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="mmCompress" data-i18n="mm_png_compress">PNG сжатие</label>
+                  <input class="input" id="mmCompress" type="number" min="0" max="9" value="6" />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" for="mmQuality" data-i18n="mm_quality">Качество</label>
+                  <input class="input" id="mmQuality" type="number" min="0" max="100" value="90" />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" data-i18n="set_flags">Флаги</label>
+                  <div class="checks">
+                    <label class="check"><input type="checkbox" id="mmSkipEmpty" checked /> <span data-i18n="mm_skip_empty">Пропускать пустые</span></label>
+                    <label class="check"><input type="checkbox" id="mmOverwrite" /> <span data-i18n="mm_overwrite">Перезаписывать</span></label>
+                    <label class="check"><input type="checkbox" id="mmDebug" /> <span data-i18n="mm_debug">Debug</span></label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button class="btn primary" id="mmBtnStart">
+                    <svg class="icon"><use href="/static/icons.svg#play"></use></svg>
+                    <span data-i18n="mm_merge">Склеить карту</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" data-i18n="task_title">Задача</div>
+            <div class="status" id="mmTaskStatus" data-i18n="task_none">Нет активной задачи</div>
+
+            <div class="progress">
+              <div class="progress-bar" id="mmProgressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="row wrap">
+              <button class="btn" id="mmBtnOpenOutput" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                <span data-i18n="btn_open_folder">Открыть папку</span>
+              </button>
+              <button class="btn ghost" id="mmBtnStopPoll" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+                <span data-i18n="btn_hide_progress">Скрыть прогресс</span>
+              </button>
+            </div>
+
+            <div class="split">
+              <div>
+                <div class="subtle-title" data-i18n="results_title">Результаты</div>
+                <div class="outputs" id="mmOutputsList"></div>
+              </div>
+              <div>
+                <div class="subtle-title" data-i18n="nav_logs">Логи</div>
+                <pre class="logbox" id="mmTaskLogs"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-settings">
+          <div class="settings-header">
+            <div class="settings-title" data-i18n="nav_settings">Настройки</div>
+            <div class="segmented settings-tabs" id="settingsTabs">
+              <label class="seg">
+                <input type="radio" name="settingsTab" value="general" checked />
+                <span data-i18n="set_tab_general">Общее</span>
+              </label>
+              <label class="seg">
+                <input type="radio" name="settingsTab" value="appearance" />
+                <span data-i18n="set_tab_appearance">Внешний вид</span>
+              </label>
+              <label class="seg">
+                <input type="radio" name="settingsTab" value="conversion" />
+                <span data-i18n="set_tab_conversion">Конвертация</span>
+              </label>
+              <label class="seg">
+                <input type="radio" name="settingsTab" value="logging" />
+                <span data-i18n="set_tab_logging">Логи</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-panels">
+            <div class="settings-panel active" data-tab="general">
+              <div class="grid settings-two">
+                <div class="card">
+                  <div class="card-title" data-i18n="set_general_title">Общее</div>
+                  <div class="form">
+                    <div class="form-row">
+                      <label class="label" for="setLanguage" data-i18n="set_language">Язык</label>
+                      <select class="input" id="setLanguage">
+                        <option value="ru">Русский</option>
+                        <option value="en">English</option>
+                      </select>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" data-i18n="set_motion">Анимации</label>
+                      <div class="checks one">
+                        <label class="check">
+                          <input type="checkbox" id="setReduceMotion" />
+                          <span data-i18n="set_reduce_motion">Уменьшить</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="hint" data-i18n="set_saved_hint">Настройки сохраняются в профиле пользователя.</div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title" data-i18n="set_info_title">Информация</div>
+                  <div class="hint">
+                    <span data-i18n="set_version">Версия</span>: <span class="mono" id="infoVersion">—</span><br />
+                    App dir: <span class="mono" id="infoAppDir">—</span><br />
+                    Log file: <span class="mono" id="infoLogFile">—</span><br />
+                    <span data-i18n="set_downloads">Загрузки</span>: <span class="mono" id="infoDownloadsDir">—</span>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="row wrap">
+                    <button class="btn" id="btnOpenAppDir">
+                      <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                      <span data-i18n="btn_open_appdir">Папка приложения</span>
+                    </button>
+                    <button class="btn ghost" id="btnOpenLogsDir">
+                      <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                      <span data-i18n="btn_open_logsdir">Папка логов</span>
+                    </button>
+                    <button class="btn ghost" id="btnOpenDownloadsDir">
+                      <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                      <span data-i18n="btn_open_downloads">Открыть Загрузки</span>
+                    </button>
+                    <button class="btn ghost" id="btnOpenLogFile">
+                      <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                      <span data-i18n="btn_open_log">Открыть log</span>
+                    </button>
+                  </div>
+                  <div class="divider"></div>
+                  <div class="hint">Автор программы: <b>Niklaser</b>.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-panel" data-tab="appearance">
+              <div class="grid settings-two">
+                <div class="card">
+                  <div class="card-title" data-i18n="set_theme_title">Тема</div>
+                  <div class="form">
+                    <div class="form-row">
+                      <label class="label" for="setThemePreset" data-i18n="set_theme_preset">Тема</label>
+                      <select class="input" id="setThemePreset">
+                        <option value="niklaser">Niklaser Yellow</option>
+                        <option value="red">Crimson Red</option>
+                        <option value="neo_blue">Neo Blue</option>
+                        <option value="violet">Violet</option>
+                        <option value="terminal">Terminal Green</option>
+                        <option value="custom" data-i18n="theme_custom">Custom</option>
+                      </select>
+                    </div>
+                    <div class="hint" data-i18n="set_theme_hint">Можно выбрать готовую тему или настроить вручную.</div>
+                    <div class="divider"></div>
+                      <div class="form theme-custom" id="customThemeGrid">
+                        <div class="form-row">
+                          <label class="label" for="thAccent" data-i18n="set_accent">Акцент</label>
+                          <input class="input" id="thAccent" type="color" value="#ffd400" />
+                        </div>
+                        <div class="form-row">
+                          <label class="label" for="thBg" data-i18n="set_bg">Фон</label>
+                          <input class="input" id="thBg" type="color" value="#0b0b0b" />
+                        </div>
+                        <div class="form-row">
+                          <label class="label" for="thPanel" data-i18n="set_panel">Панель</label>
+                          <input class="input" id="thPanel" type="color" value="#121212" />
+                        </div>
+                        <div class="form-row">
+                          <label class="label" for="thPanel2" data-i18n="set_panel2">Panel 2</label>
+                          <input class="input" id="thPanel2" type="color" value="#0f0f0f" />
+                        </div>
+                        <div class="form-row">
+                          <label class="label" for="thText" data-i18n="set_text">Текст</label>
+                          <input class="input" id="thText" type="color" value="#ffffff" />
+                        </div>
+                        <div class="form-row">
+                          <label class="label" for="thMuted" data-i18n="set_muted">Muted</label>
+                          <input class="input" id="thMuted" type="color" value="#cfcfcf" />
+                        </div>
+                        <div class="form-row">
+                          <label class="label" for="thDanger" data-i18n="set_danger">Danger</label>
+                          <input class="input" id="thDanger" type="color" value="#ff4d4d" />
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title" data-i18n="set_visual_title">Визуальные эффекты</div>
+                  <div class="form">
+                    <div class="form-row">
+                      <label class="label" data-i18n="set_glow">Подсветка</label>
+                      <div class="checks one">
+                        <label class="check">
+                          <input type="checkbox" id="setGlowEnabled" />
+                          <span data-i18n="set_enabled">Включить</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" for="setFont" data-i18n="set_font">Шрифт</label>
+                      <select class="input" id="setFont">
+                        <option value="europe" data-i18n="font_europe">Europe-Book-Edited</option>
+                        <option value="arial" data-i18n="font_arial">Arial</option>
+                        <option value="jetbrains" data-i18n="font_jetbrains">JetBrains Mono</option>
+                      </select>
+                    </div>
+                    <div class="hint" data-i18n="set_font_hint">
+                      Если шрифт не установлен — будет использован ближайший доступный.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title" data-i18n="set_background_title">Фон</div>
+                  <div class="form">
+                    <div class="form-row">
+                      <label class="label" data-i18n="set_bg_image">Фон-изображение</label>
+                      <div class="checks one">
+                        <label class="check">
+                          <input type="checkbox" id="setBgEnabled" />
+                          <span data-i18n="set_enabled">Включить</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <label class="label" data-i18n="set_bg_file">Файл</label>
+                      <div class="row wrap">
+                        <input id="setBgFile" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+                        <button class="btn" id="btnChooseBg">
+                          <svg class="icon"><use href="/static/icons.svg#image"></use></svg>
+                          <span data-i18n="btn_choose_image">Выбрать</span>
+                        </button>
+                        <button class="btn ghost" id="btnClearBg">
+                          <svg class="icon"><use href="/static/icons.svg#trash"></use></svg>
+                          <span data-i18n="btn_remove">Удалить</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="hint">
+                      <span data-i18n="set_current">Текущий</span>: <span class="mono" id="setBgCurrent">—</span>
+                    </div>
+
+                    <div class="form-row">
+                      <label class="label" for="setBgOpacity" data-i18n="set_bg_opacity">Прозрачность</label>
+                      <input class="input range" id="setBgOpacity" type="range" min="0" max="1" step="0.01" />
+                    </div>
+                    <div class="form-row">
+                      <label class="label" for="setBgBlur" data-i18n="set_bg_blur">Размытие</label>
+                      <input class="input range" id="setBgBlur" type="range" min="0" max="32" step="1" />
+                    </div>
+
+                    <div class="hint" data-i18n="set_bg_hint">Картинка сохраняется в профиле пользователя.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-panel" data-tab="conversion">
+              <div class="grid settings-two">
+                <div class="card">
+                  <div class="card-title" data-i18n="set_conversion_title">Конвертация</div>
+                  <div class="form">
+                    <div class="form-row">
+                      <label class="label" for="setDefaultOutputMode" data-i18n="set_default_output_mode">Вывод</label>
+                      <select class="input" id="setDefaultOutputMode">
+                        <option value="zip">ZIP</option>
+                        <option value="folder" data-i18n="output_folder">Папка</option>
+                      </select>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" for="setDefaultZipDir" data-i18n="set_zip_dir">ZIP → папка</label>
+                      <div class="row wrap">
+                        <input class="input" id="setDefaultZipDir" placeholder="Downloads" />
+                        <button class="btn ghost" id="btnPickZipDir" type="button">
+                          <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                          <span data-i18n="btn_choose_folder">Выбрать</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" for="setDefaultOutputDir" data-i18n="set_folder_dir">Папка → путь</label>
+                      <div class="row wrap">
+                        <input class="input" id="setDefaultOutputDir" placeholder="Путь для режима 'Папка'" />
+                        <button class="btn ghost" id="btnPickOutputDir" type="button">
+                          <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                          <span data-i18n="btn_choose_folder">Выбрать</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" data-i18n="set_flags">Флаги</label>
+                      <div class="checks">
+                        <label class="check"><input type="checkbox" id="setPreserve" /> <span data-i18n="flag_preserve">Сохранять структуру</span></label>
+                        <label class="check"><input type="checkbox" id="setUnique" /> <span data-i18n="flag_unique">Уникальные имена</span></label>
+                        <label class="check"><input type="checkbox" id="setSkeleton" /> <span data-i18n="flag_skeleton">Скелет</span></label>
+                        <label class="check"><input type="checkbox" id="setAnimation" /> <span data-i18n="flag_anim">Анимации</span></label>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <label class="label" data-i18n="set_model_formats">Модели</label>
+                      <div class="chips">
+                        <label class="chip"><input type="checkbox" class="mdlFmt" value="glb" checked /> GLB</label>
+                        <label class="chip"><input type="checkbox" class="mdlFmt" value="obj" /> OBJ</label>
+                        <label class="chip"><input type="checkbox" class="mdlFmt" value="dae" /> DAE</label>
+                        <label class="chip"><input type="checkbox" class="mdlFmt" value="ms3d" /> MS3D</label>
+                      </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="form-row">
+                      <label class="label">ZIP</label>
+                      <div class="checks one">
+                        <label class="check">
+                          <input type="checkbox" id="setAutoDownloadZip" />
+                          <span data-i18n="set_zip_auto_hint">Автоскачивание после конвертации</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-title" data-i18n="set_logging_title">Логирование</div>
+                  <div class="form">
+                    <div class="form-row">
+                      <label class="label" for="setLogLevel" data-i18n="set_log_level">Уровень</label>
+                      <select class="input" id="setLogLevel">
+                        <option value="DEBUG">DEBUG</option>
+                        <option value="INFO">INFO</option>
+                        <option value="WARNING">WARNING</option>
+                        <option value="ERROR">ERROR</option>
+                      </select>
+                    </div>
+                    <div class="hint" data-i18n="set_log_hint">Если что-то пошло не так — включи DEBUG и повтори.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-panel" data-tab="logging">
+              <div class="grid settings-two">
+                <div class="card">
+                  <div class="card-title" data-i18n="set_help_title">Подсказки</div>
+                  <div class="hint" data-i18n-html="set_help_body">
+                    • ZIP по умолчанию сохраняется в «Загрузки».<br />
+                    • Если файл не появился — открой «Логи приложения».<br />
+                    • Для репорта ошибок приложи лог-файл.
+                  </div>
+                </div>
+                <div class="card settings-footer">
+                  <div class="card-title" data-i18n="set_actions_title">Действия</div>
+                  <div class="row wrap">
+                    <button class="btn primary" id="btnSaveSettings">
+                      <svg class="icon"><use href="/static/icons.svg#save"></use></svg>
+                      <span data-i18n="btn_save">Сохранить</span>
+                    </button>
+                    <button class="btn ghost" id="btnResetSettings">
+                      <svg class="icon"><use href="/static/icons.svg#refresh"></use></svg>
+                      <span data-i18n="btn_reset_all">Сброс</span>
+                    </button>
+                  </div>
+                  <div class="hint" data-i18n="settings_footer_hint">Сохранение применяет изменения сразу.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-logs">
+          <div class="card">
+            <div class="card-title" data-i18n="app_logs_title">Логи приложения</div>
+            <div class="row">
+              <button class="btn" id="btnRefreshLogs">
+                <svg class="icon"><use href="/static/icons.svg#refresh"></use></svg>
+                <span data-i18n="btn_refresh">Обновить</span>
+              </button>
+            </div>
+            <pre class="logbox" id="appLogs"></pre>
+          </div>
+        </section>
+
+        <section class="view" id="view-about">
+          <div class="card about-card">
+            <div class="about-header">
+              <div class="about-brand">
+                <img class="about-icon" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
+                <div>
+                  <div class="about-title" data-i18n="about_title">О программе</div>
+                  <div class="about-sub" data-i18n="about_sub">SC-FILE:MODDED</div>
+                </div>
+              </div>
+              <div class="about-actions">
+                <a class="btn icon-btn" href="https://github.com/Niklaser-Sosal/SC-FILE-MODDED" target="_blank" rel="noopener">
+                  <img class="icon-img" src="/static/github-svgrepo-com.svg" alt="github" />
+                  <span data-i18n="about_repo_btn">GitHub</span>
+                </a>
+                <a class="btn icon-btn" href="https://sc-file.readthedocs.io/ru/latest/index.html" target="_blank" rel="noopener">
+                  <svg class="icon"><use href="/static/icons.svg#info"></use></svg>
+                  <span data-i18n="about_docs_btn">Docs</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="about-body">
+              <div class="about-lead" data-i18n-html="about_body">
+                SC-FILE:MODDED — это модифицированная утилита sc-file для преобразования содержимого (файлов) игры Stalcraft:X
+                в стандартные для пользователя форматы.
+              </div>
+              <div class="about-paragraph" data-i18n-html="about_more_1">
+                Проект ориентирован на локальную работу: всё обрабатывается на твоём ПК, без отправки файлов в интернет.
+                Это ускоряет конвертацию и даёт контроль над результатом.
+              </div>
+              <div class="about-paragraph" data-i18n-html="about_more_2">
+                Основная идея — удобный интерфейс для пакетной обработки ассетов, быстрый доступ к логам и гибкая настройка.
+                Используй готовые темы или сделай свой стиль.
+              </div>
+              <div class="alert warn" data-i18n-html="about_warning">
+                ОТВЕТСТВЕННОСТЬ ЗА ВАШИ ДЕЙСТВИЯ АВТОР ПРОГРАММЫ НЕ НЕСЁТ!
+              </div>
+              <div class="about-badges">
+                <div class="badge">
+                  <svg class="icon"><use href="/static/icons.svg#info"></use></svg>
+                  <span data-i18n="about_badge_web">Web UI</span>
+                </div>
+                <div class="badge">
+                  <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+                  <span data-i18n="about_badge_logs">Logs</span>
+                </div>
+                <div class="badge">
+                  <svg class="icon"><use href="/static/icons.svg#arrows"></use></svg>
+                  <span data-i18n="about_badge_batch">Batch</span>
+                </div>
+                <div class="badge">
+                  <svg class="icon"><use href="/static/icons.svg#settings"></use></svg>
+                  <span data-i18n="about_badge_custom">Customize</span>
+                </div>
+              </div>
+
+              <div class="info-grid">
+                <div class="info-item">
+                  <svg class="icon"><use href="/static/icons.svg#check"></use></svg>
+                  <div>
+                    <div class="info-title" data-i18n="about_feat_1_title">Пакетные конвертации</div>
+                    <div class="info-text" data-i18n="about_feat_1_text">ZIP или выбранная папка, с логами и настройками.</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <svg class="icon"><use href="/static/icons.svg#image"></use></svg>
+                  <div>
+                    <div class="info-title" data-i18n="about_feat_2_title">Map Merge</div>
+                    <div class="info-text" data-i18n="about_feat_2_text">Склейка регионов карты в изображения.</div>
+                  </div>
+                </div>
+                <div class="info-item">
+                  <svg class="icon"><use href="/static/icons.svg#settings"></use></svg>
+                  <div>
+                    <div class="info-title" data-i18n="about_feat_3_title">Кастомизация</div>
+                    <div class="info-text" data-i18n="about_feat_3_text">Темы, фон, язык и параметры вывода.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+              <div class="hint" data-i18n-html="about_author">Автор программы: <b>Niklaser</b>.</div>
+              <div class="hint" data-i18n-html="about_theme">
+                Основная тема: <span class="mono">жёлтый / чёрный / белый</span>. Настраивается в разделе «Настройки».
+              </div>
+            </div>
+
+            <div class="about-gallery">
+              <div class="about-frame">
+                <img class="about-img" src="/static/bac1.jpg" alt="about-1" />
+              </div>
+              <div class="about-frame">
+                <img class="about-img" src="/static/bac2.jpg" alt="about-2" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-card">
+        <div class="loading-brand">
+          <img class="brand-icon big" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
+          <div>
+            <div class="loading-title">SC-FILE:MODDED</div>
+            <div class="loading-sub">Niklaser edition</div>
+          </div>
+        </div>
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <div class="loading-text" id="loadingText">Загрузка…</div>
+        <div class="loading-tip" id="loadingTip"></div>
+      </div>
+    </div>
+
+    <div class="toasts" id="toasts" aria-live="polite" aria-relevant="additions"></div>
+
+    <div class="welcome-overlay" id="welcomeOverlay">
+      <div class="welcome-card">
+        <div class="welcome-title" data-i18n="welcome_title">Добро пожаловать</div>
+        <div class="welcome-text" data-i18n-html="welcome_body">
+          Это локальная утилита для конвертации ассетов Stalcraft:X. Всё работает на твоём ПК.
+        </div>
+        <div class="welcome-actions">
+          <button class="btn primary" id="welcomeOk" data-i18n="welcome_ok">Понятно</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>
+

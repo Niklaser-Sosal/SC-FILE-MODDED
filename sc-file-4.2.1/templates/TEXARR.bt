@@ -1,0 +1,32 @@
+//------------------------------------------------
+// File: TEXARR.bt
+// Authors: onejeuu
+// Version: 2.0
+// Purpose: Parse texture arrays.
+// Category: STALCRAFT
+// File Mask: *.texarr
+//------------------------------------------------
+
+// Define byte order
+
+BigEndian();
+
+
+// Data Types
+
+typedef struct {
+    ushort size <bgcolor=cDkYellow>;
+    if ( size > 0 ) char data[size] <bgcolor=cYellow, optimize=false>;
+} String <read=(exists(data) ? data : "")>;
+
+typedef struct {
+    String id;
+    uint filesize <bgcolor=cDkGreen>;
+    byte image[filesize] <bgcolor=cLtGreen>;
+} Texture <read=(exists(this.id.data) ? this.id.data : "")>;
+
+
+// File
+
+uint textureCount <bgcolor=cAqua>;
+Texture textures[textureCount] <name="Texture", optimize=false>;

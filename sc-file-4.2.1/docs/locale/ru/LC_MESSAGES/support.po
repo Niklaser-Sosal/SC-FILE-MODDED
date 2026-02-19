@@ -1,0 +1,153 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-02-01 15:15+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../support.rst:2
+msgid "✨ Formats Support"
+msgstr "✨ Поддержка Форматов"
+
+#: ../../support.rst:10
+msgid "Supported Versions: ``7.0``, ``8.0``, ``10.0``, ``11.0``"
+msgstr "Поддерживаемые версии: ``7.0``, ``8.0``, ``10.0``, ``11.0``"
+
+#: ../../support.rst:12
+msgid "Output Formats"
+msgstr "Выходные Форматы"
+
+#: ../../support.rst:15
+msgid "Suffix"
+msgstr "Суффикс"
+
+#: ../../support.rst:16
+msgid "Name"
+msgstr "Название"
+
+#: ../../support.rst:17
+msgid "Skeleton"
+msgstr "Скелет"
+
+#: ../../support.rst:18
+msgid "Animation"
+msgstr "Анимации"
+
+#: ../../support.rst:19
+msgid "Speed"
+msgstr "Скорость"
+
+#: ../../support.rst:41
+msgid "**Feature:**"
+msgstr "**Функция:**"
+
+#: ../../support.rst:42
+msgid "✅ Supported"
+msgstr "✅ Поддерживается"
+
+#: ../../support.rst:43
+msgid "❌ Not supported by scfile"
+msgstr "❌ Не поддерживается scfile"
+
+#: ../../support.rst:44
+msgid "➖ Not supported by format"
+msgstr "➖ Не поддерживается форматом"
+
+#: ../../support.rst:46
+msgid "Benchmarks were performed using one of the most complex 3D model."
+msgstr ""
+"Тестирование скорости экспорта проводилось на одной из самых комплексных "
+"3D-моделей."
+
+#: ../../support.rst:47
+msgid "Note that average results may vary."
+msgstr "Средние результаты могут варьироваться."
+
+#: ../../support.rst:53
+msgid ""
+"Supported Formats: ``DXT1``, ``DXT3``, ``DXT5``, ``RGBA8``, ``BGRA8``, "
+"``DXN_XY``, ``RGBA32F``"
+msgstr ""
+"Поддерживаемые форматы: ``DXT1``, ``DXT3``, ``DXT5``, ``RGBA8``, "
+"``BGRA8``, ``DXN_XY``, ``RGBA32F``"
+
+#: ../../support.rst:54
+msgid "Supported Types: ``Texture``, ``Normalmap``, ``Cubemap``"
+msgstr "Поддерживаемые типы: ``Texture``, ``Normalmap``, ``Cubemap``"
+
+#: ../../support.rst:56
+msgid "Output Format: ``.dds`` (`DirectDraw Surface <DDS_>`_)"
+msgstr "Выходной формат: ``.dds`` (`DirectDraw Surface <DDS_>`_)"
+
+#: ../../support.rst:63
+msgid "Known Formats"
+msgstr "Известные Форматы"
+
+#: ../../support.rst:66
+msgid "Encoded"
+msgstr "Зашифр."
+
+#: ../../support.rst:67
+msgid "Decoded"
+msgstr "Расшифр."
+
+#: ../../support.rst:68
+msgid "Format"
+msgstr "Формат"
+
+#: ../../support.rst:69
+msgid "Compression"
+msgstr "Сжатие"
+
+#: ../../support.rst:99
+msgid "`More about Compression... <S3TC_>`_"
+msgstr "`Подробнее об S3TC сжатии... <S3TC_>`_"
+
+#: ../../support.rst:106
+msgid "Format: ``.png`` (`Portable Network Graphics <PNG_>`_)"
+msgstr "Формат: ``.png`` (`Portable Network Graphics <PNG_>`_)"
+
+#: ../../support.rst:107
+msgid "Only difference is `file signature <SIG_>`_ *(first 4 bytes)*"
+msgstr "Единственное отличие это `сигнатура файла <SIG_>`_ *(первые 4 байта)*"
+
+#: ../../support.rst:114
+msgid "Output Format: ``.zip`` (`ZIP <ZIP_>`_)"
+msgstr "Выходной формат: ``.zip`` (`ZIP <ZIP_>`_)"
+
+#: ../../support.rst:115
+msgid "Textures Format: ``.dds`` (`DirectDraw Surface <DDS_>`_)"
+msgstr "Формат текстур: ``.dds`` (`DirectDraw Surface <DDS_>`_)"
+
+#: ../../support.rst:122
+msgid "Format: `Named Binary Tag <NBT_>`_"
+msgstr "Формат: `Named Binary Tag <NBT_>`_"
+
+#: ../../support.rst:123
+msgid "Supported Types: ``RAW``, ``GZIP``, ``ZSTD``"
+msgstr "Поддерживаемые типы: ``RAW``, ``GZIP``, ``ZSTD``"
+
+#: ../../support.rst:124
+msgid ""
+"Supported Files: ``assets/stalker/itemnames.dat``, ``config/prefs``, "
+"``config/%Name%/common``, ``config/%Name%/sd0``, ``config/%Name%/sd1``, "
+"``config/%Name%/sd2``, ``config/%Name%/sd3``, ``config/%Name%/sd4``"
+msgstr ""
+"Поддерживаемые Файлы: ``assets/stalker/itemnames.dat``, ``config/prefs``, "
+"``config/%Name%/common``, ``config/%Name%/sd0``, ``config/%Name%/sd1``, "
+"``config/%Name%/sd2``, ``config/%Name%/sd3``, ``config/%Name%/sd4``"
+
+#: ../../support.rst:125
+msgid "Output Format: ``.json`` (`JavaScript Object Notation <JSON_>`_)"
+msgstr "Выходной формат: ``.json`` (`JavaScript Object Notation <JSON_>`_)"
+

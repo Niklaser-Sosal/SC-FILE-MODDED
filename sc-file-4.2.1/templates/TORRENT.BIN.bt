@@ -1,0 +1,44 @@
+//------------------------------------------------
+// File: TORRENT.BIN.bt
+// Authors: Art3mLapa
+// Version: 2.0
+// Purpose: Parse torrent file.
+// Category: STALCRAFT
+// File Mask: *.torrent.bin
+//------------------------------------------------
+
+BigEndian();
+
+typedef struct {
+    ushort size <bgcolor=cDkYellow>;
+    if ( size > 0 ) char data[size] <bgcolor=cYellow, optimize=false>;
+} String <read=(exists(data) ? data : "")>;
+
+typedef struct {
+    String path <name="File Path">;
+    int64 size <name="File Size", fgcolor=cAqua>;
+    char sha1[20] <name="File Hash", fgcolor=cGreen, bgcolor=cDkGreen>;
+} TorrentFile <read=(exists(path.data) ? path.data : ""), optimize=false>;
+
+typedef struct {
+    uint64 totalFilesSize <name="Total Files Size", fgcolor=cAqua, bgcolor=cDkAqua>;
+    String comment <name="Comment", fgcolor=cPurple>;
+    uint32 trackerCount <name="Tracker Count", bgcolor=cLtGreen>;
+    String trackers[trackerCount] <name="Tracker", fgcolor=cLtGreen, optimize=false>;
+    String reserved <name="Reserved">;
+
+    uint32 pieceLength <name="Piece Length", bgcolor=cDkRed, fgcolor=cLtRed>;
+    String name <name="Torrent Name">;
+    uint32 fileCount <name="File Count", bgcolor=cWhite>;
+    TorrentFile files[fileCount] <name="File">;
+
+    uint32 hashCount <name="Piece Hash Count", bgcolor=cRed>;
+} TorrentMeta;
+
+TorrentMeta meta <name="Meta">;
+
+typedef struct {
+    char sha1[20];
+} PieceHash;
+
+PieceHash hash [meta.hashCount] <name="Piece Hash", bgcolor=cLtRed, comment="SHA-1 hashes for pieces">;

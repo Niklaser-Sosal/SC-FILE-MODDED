@@ -1,0 +1,32 @@
+//------------------------------------------------
+// File: TORRENT.MAP.bt
+// Authors: onejeuu
+// Version: 2.0
+// Purpose: Parse game file hash mapping.
+// Category: STALCRAFT
+// File Mask: *.map
+//------------------------------------------------
+
+
+// Define byte order
+
+BigEndian();
+
+
+// Data Types
+
+typedef struct {
+    ushort size <bgcolor=cDkYellow>;
+    if ( size > 0 ) char data[size] <bgcolor=cYellow, optimize=false>;
+} String <read=(exists(data) ? data : "")>;
+
+typedef struct {
+    String path <name="Path">;
+    char sha1[20] <name="Hash", fgcolor=cGreen, bgcolor=cDkGreen>;
+} FileEntry;
+
+
+// File
+
+uint count <name="Entries Count", bgcolor=cPurple>;
+FileEntry entries[count] <name="File Entries", optimize=false>;
