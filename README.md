@@ -1,8 +1,8 @@
 # SC-FILE:MODDED
 
 <p align="center">
-  <img src="webapp/static/app_icon.png" alt="SC-FILE:MODDED" width="96" height="96" />
-  <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="28" height="28" />
+  <img src="webapp/static/app_icon.png" alt="SC-FILE:MODDED" width="112" height="112" />
+  <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="32" height="32" />
 </p>
 
 <p align="center">
@@ -13,18 +13,20 @@
   <img alt="Status" src="https://img.shields.io/badge/status-stable-yellow?style=flat-square" />
 </p>
 
-- [Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
 <p align="center">
-  <img src="preview.png" alt="Preview" width="720" />
+  <img src="preview.png" alt="Preview" width="900" />
 </p>
+
+- [Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
 
 Модифицированная версия `sc-file` с современным Web UI и desktop-окном (pywebview).  
 Проект ориентирован на локальную работу: файлы обрабатываются на вашем ПК.
 В данной версии используется оригинальная сборка sc-file 4.1.2.
 
 ## Возможности
+
 <p align="center">
-  <img src="convert.png" alt="Preview" width="720" />
+  <img src="convert.png" alt="Convert" width="900" />
 </p>
 
 - Пакетная конвертация ассетов в ZIP или папку
@@ -86,9 +88,11 @@ python3.11 -m venv sc-file-4.2.1/.venv
 ```
 
 ## Шрифты
+
 <p align="center">
-  <img src="nastroyki.png" alt="Preview" width="720" />
+  <img src="nastroyki.png" alt="Settings" width="900" />
 </p>
+
 Файлы лежат в `webapp/static/fonts/`:
 - `Europe-Book-Edited.otf`
 - `JetBrainsMono.ttf`
@@ -107,7 +111,9 @@ logs/sc-file-web.log
 
 ## Релизы
 
-- https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases
+- [GitHub Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
 
 ## Лицензия и ответственность
+
 Проект предоставляется «как есть». Автор программы не несёт ответственности за ваши действия.
+
