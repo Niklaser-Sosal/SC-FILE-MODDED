@@ -12,8 +12,6 @@
   <img alt="Build" src="https://img.shields.io/badge/build-pyinstaller-black?style=flat-square" />
   <img alt="Status" src="https://img.shields.io/badge/status-stable-yellow?style=flat-square" />
 </p>
-## Релизы
-
 - [Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
 <p align="center">
   <img src="preview.png" alt="Preview" width="720" />
