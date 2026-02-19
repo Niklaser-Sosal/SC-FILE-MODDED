@@ -12,15 +12,27 @@
   <img alt="Build" src="https://img.shields.io/badge/build-pyinstaller-black?style=flat-square" />
   <img alt="Status" src="https://img.shields.io/badge/status-stable-yellow?style=flat-square" />
 </p>
+## Релизы
+
+- [Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
+<p align="center">
+  <img src="preview.png" alt="Preview" width="720" />
+</p>
 
 Модифицированная версия `sc-file` с современным Web UI и desktop-окном (pywebview).  
 Проект ориентирован на локальную работу: файлы обрабатываются на вашем ПК.
+В данной версии используется оригинальная сборка sc-file 4.1.2.
 
 ## Возможности
+<p align="center">
+  <img src="convert.png" alt="Preview" width="720" />
+</p>
 
 - Пакетная конвертация ассетов в ZIP или папку
 - Map Merge (склейка регионов карты в изображения)
 - Темы, фон, язык, настройки вывода
+- Подсветка интерфейса и выбор шрифтов
+- Фоновое изображение с настройкой прозрачности/размытия
 - Логи и журнал задач
 - Desktop-окно (pywebview) или запуск в браузере
 
@@ -75,7 +87,9 @@ python3.11 -m venv sc-file-4.2.1/.venv
 ```
 
 ## Шрифты
-
+<p align="center">
+  <img src="nastroyki.png" alt="Preview" width="720" />
+</p>
 Файлы лежат в `webapp/static/fonts/`:
 - `Europe-Book-Edited.otf`
 - `JetBrainsMono.ttf`
@@ -92,6 +106,9 @@ python3.11 -m venv sc-file-4.2.1/.venv
 logs/sc-file-web.log
 ```
 
-## Лицензия и ответственность
+## Релизы
 
+- https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases
+
+## Лицензия и ответственность
 Проект предоставляется «как есть». Автор программы не несёт ответственности за ваши действия.
