@@ -2,13 +2,19 @@ from __future__ import annotations
 
 import logging
 import os
+import sys
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
 
 def setup_logging(app_dir: Path, level: str = "INFO") -> tuple[logging.Logger, Path]:
     env_dir = Path(os.environ["SCFILE_LOGS_DIR"]) if "SCFILE_LOGS_DIR" in os.environ else None
-    logs_dir = env_dir if env_dir else (app_dir / "logs")
+    if env_dir:
+        logs_dir = env_dir
+    elif getattr(sys, "frozen", False):
+        logs_dir = Path(sys.executable).resolve().parent / "logs"
+    else:
+        logs_dir = app_dir / "logs"
     logs_dir.mkdir(parents=True, exist_ok=True)
     log_path = logs_dir / "sc-file-web.log"
 

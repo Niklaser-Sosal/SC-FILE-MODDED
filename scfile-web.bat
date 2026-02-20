@@ -10,6 +10,8 @@ rem - starts web UI (pywebview window, fallback to browser)
 
 set "APP_NAME=SC-FILE:MODDED"
 
+set "USE_COLOR="
+
 set "SCRIPT_DIR=%~dp0"
 for %%I in ("%SCRIPT_DIR%.") do set "SCRIPT_DIR=%%~fI"
 set "SCFILE_LOGS_DIR=%SCRIPT_DIR%\logs"
@@ -29,7 +31,7 @@ if not exist "%PKG_STATIC%" mkdir "%PKG_STATIC%" >nul 2>nul
 if /i not "%SCFILE_WEB_STATIC_DIR%"=="%PKG_STATIC%" (
   if not exist "%PKG_STATIC%\index.html" (
     if exist "%SCFILE_WEB_STATIC_DIR%\index.html" (
-      echo [INFO] Restoring missing web assets into: "%PKG_STATIC%"
+call :log_info "Restoring missing web assets into: %PKG_STATIC%"
       xcopy /E /I /Y "%SCFILE_WEB_STATIC_DIR%\*" "%PKG_STATIC%\\" >nul
     )
   )
@@ -45,7 +47,7 @@ if not exist "%REQ2%" goto :err_req2
 rem If venv exists - do not require system python in PATH.
 if exist "%PY%" if exist "%VENV_DIR%\pyvenv.cfg" goto :venv_ok
 
-echo [INFO] Creating/repairing venv: "%VENV_DIR%"
+call :log_info "Creating/repairing venv: %VENV_DIR%"
 call :find_system_python
 if not defined SYS_PY goto :err_nopy
 
@@ -60,7 +62,7 @@ if errorlevel 1 goto :err_venv_version
 
 "%PY%" -m pip --version >nul 2>nul
 if not errorlevel 1 goto :pip_ok
-echo [INFO] pip not found. Bootstrapping (ensurepip)...
+call :log_warn "pip not found. Bootstrapping (ensurepip)..."
 "%PY%" -m ensurepip --upgrade
 if errorlevel 1 goto :err_pip_bootstrap
 :pip_ok
@@ -76,26 +78,26 @@ if not exist "%REQ_MARKER%" goto :marker_missing
 set "OLD_HASH="
 set /p OLD_HASH=<"%REQ_MARKER%"
 if /i not "!OLD_HASH!"=="!REQ_HASH!" goto :install_deps
-echo [INFO] Dependencies OK (requirements unchanged). Verifying imports...
+call :log_info "Dependencies OK (requirements unchanged). Verifying imports..."
 call :verify_imports
 if errorlevel 1 goto :install_deps
 goto :run
 
 :marker_missing
-echo [INFO] Requirements marker missing. Verifying imports...
+call :log_info "Requirements marker missing. Verifying imports..."
 call :verify_imports
 if errorlevel 1 goto :install_deps
-echo [INFO] Dependencies OK. Recreating marker.
+call :log_info "Dependencies OK. Recreating marker."
 echo !REQ_HASH!>"%REQ_MARKER%"
 goto :run
 
 :install_deps
-echo [INFO] Installing/updating dependencies...
-echo [INFO] Upgrading pip...
+call :log_info "Installing/updating dependencies..."
+call :log_info "Upgrading pip..."
 "%PY%" -m pip install --upgrade pip setuptools wheel
 if errorlevel 1 goto :err_pip_upgrade
 
-echo [INFO] pip install -r requirements...
+call :log_info "pip install -r requirements..."
 "%PY%" -m pip install -r "%REQ1%" -r "%REQ2%"
 if errorlevel 1 goto :err_pip_install
 
@@ -105,7 +107,7 @@ if errorlevel 1 goto :err_imports
 if defined REQ_HASH echo !REQ_HASH!>"%REQ_MARKER%"
 
 :run
-echo [INFO] Starting %APP_NAME% Web UI...
+call :log_info "Starting %APP_NAME% Web UI..."
 pushd "%SCFILE_DIR%"
 "%PY%" -m scfile.webapp %*
 set "RC=%ERRORLEVEL%"
@@ -115,84 +117,84 @@ if not "%RC%"=="0" goto :err_run
 endlocal & exit /b 0
 
 :err_scfile
-echo [ERROR] Could not find "sc-file-*" folder near: "%SCRIPT_DIR%"
-echo         Put this .bat next to sc-file-* (or inside a subfolder of that folder).
+call :log_error "Could not find \"sc-file-*\" folder near: %SCRIPT_DIR%"
+call :log_error "Put this .bat next to sc-file-* (or inside a subfolder of that folder)."
 pause
 endlocal
 exit /b 1
 
 :err_static
-echo [ERROR] Could not find web assets (webapp\\static\\index.html).
-echo         Make sure the "webapp\\static" folder exists near this .bat.
+call :log_error "Could not find web assets (webapp\\static\\index.html)."
+call :log_error "Make sure the \"webapp\\static\" folder exists near this .bat."
 pause
 endlocal
 exit /b 1
 
 :err_req1
-echo [ERROR] Missing file: "%REQ1%"
+call :log_error "Missing file: %REQ1%"
 pause
 endlocal
 exit /b 1
 
 :err_req2
-echo [ERROR] Missing file: "%REQ2%"
+call :log_error "Missing file: %REQ2%"
 pause
 endlocal
 exit /b 1
 
 :err_nopy
-echo [ERROR] Python 3.11+ not found.
-echo         Install Python 3.11+ and re-run.
+call :log_error "Python 3.11+ not found."
+call :log_error "Install Python 3.11+ and re-run."
 pause
 endlocal
 exit /b 1
 
 :err_venv_create
-echo [ERROR] Failed to create venv.
+call :log_error "Failed to create venv."
 pause
 endlocal
 exit /b 1
 
 :err_venv_py
-echo [ERROR] venv python not found: "%PY%"
-echo         Delete "%VENV_DIR%" and run again.
+call :log_error "venv python not found: %PY%"
+call :log_error "Delete %VENV_DIR% and run again."
 pause
 endlocal
 exit /b 1
 
 :err_venv_version
-echo [ERROR] venv Python is too old or broken (need 3.11+).
-echo         Delete "%VENV_DIR%" and run this launcher again.
+call :log_error "venv Python is too old or broken (need 3.11+)."
+call :log_error "Delete %VENV_DIR% and run this launcher again."
 pause
 endlocal
 exit /b 1
 
 :err_pip_bootstrap
-echo [ERROR] Failed to install pip (ensurepip).
+call :log_error "Failed to install pip (ensurepip)."
 pause
 endlocal
 exit /b 1
 
 :err_pip_upgrade
-echo [ERROR] pip upgrade failed.
+call :log_error "pip upgrade failed."
 pause
 endlocal
 exit /b 1
 
 :err_pip_install
-echo [ERROR] Dependency install failed.
+call :log_error "Dependency install failed."
 pause
 endlocal
 exit /b 1
 
 :err_imports
-echo [ERROR] Imports still failing after install.
+call :log_error "Imports still failing after install."
 pause
 endlocal
 exit /b 1
 
 :err_run
-echo [ERROR] scfile.webapp exited with code %RC%.
+call :log_error "scfile.webapp exited with code %RC%."
 pause
 endlocal & exit /b %RC%
 
@@ -232,6 +234,22 @@ pushd "%SCFILE_DIR%" >nul 2>nul
 if errorlevel 1 set "CHK_ERR=1"
 popd >nul 2>nul
 exit /b %CHK_ERR%
+
+:log_info
+echo [INFO] %~1
+exit /b 0
+
+:log_warn
+echo [WARN] %~1
+exit /b 0
+
+:log_error
+echo [ERROR] %~1
+exit /b 0
+
+:log_ok
+echo [OK] %~1
+exit /b 0
 
 :detect_layout
 set "ROOT="

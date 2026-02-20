@@ -60,8 +60,8 @@ const I18N = {
 
     about_title: "О программе",
     about_body:
-      "Это локальный web-интерфейс для SC-FILE:MODDED: конвертация ассетов STALCRAFT в стандартные форматы с логами, настройками и пакетной обработкой.",
-    about_author: "Автор интерфейса: <b>Niklaser</b>.",
+      "Это локальный web-интерфейс для SC-FILE:MODDED: конвертация ассетов STALCRAFT:X в стандартные форматы с логами, настройками и пакетной обработкой. Всё работает на вашем ПК, без загрузки файлов в интернет.",
+    about_author: "Авторы: <b>Niklaser</b> | <b>onejeuu</b>.",
     about_theme: "Основная тема: <span class=\"mono\">жёлтый / чёрный / белый</span>. Настраивается в разделе «Настройки».",
 
     ph_folder_path: "Например: D:\\\\output\\\\scfile",
@@ -155,7 +155,7 @@ const I18N = {
 
     set_actions_title: "Действия",
     btn_save: "Сохранить",
-    btn_reset_all: "Сброс",
+    btn_reset_all: "Настройки по умолчанию",
     settings_footer_hint: "Сохранение применяет изменения сразу.",
     btn_delete: "Удалить",
     btn_download: "Скачать",
@@ -228,8 +228,8 @@ const I18N = {
 
     about_title: "About",
     about_body:
-      "Local web interface for SC-FILE:MODDED: convert STALCRAFT assets into standard formats with logs, settings and batch processing.",
-    about_author: "UI author: <b>Niklaser</b>.",
+      "Local web interface for SC-FILE:MODDED: convert STALCRAFT:X assets into standard formats with logs, settings and batch processing. Everything runs on your PC with no file uploads.",
+    about_author: "Authors: <b>Niklaser</b> | <b>onejeuu</b>.",
     about_theme: "Main theme: <span class=\"mono\">yellow / black / white</span>. Configure it in Settings.",
 
     ph_folder_path: "e.g. D:\\\\output\\\\scfile",
@@ -323,7 +323,7 @@ const I18N = {
 
     set_actions_title: "Actions",
     btn_save: "Save",
-    btn_reset_all: "Reset",
+    btn_reset_all: "Default settings",
     settings_footer_hint: "Saving applies changes immediately.",
     btn_delete: "Delete",
     btn_download: "Download",
@@ -668,6 +668,7 @@ function applyBackground(cfg) {
   root.style.setProperty("--bg-image", enabled && url ? `url("${url}")` : "none");
   root.style.setProperty("--bg-image-opacity", String(cfg?.background_opacity ?? 0.22));
   root.style.setProperty("--bg-image-blur", `${cfg?.background_blur ?? 0}px`);
+  root.classList.toggle("has-custom-bg", !!(enabled && url));
 }
 
 function applyMotion(cfg) {
@@ -719,6 +720,24 @@ const THEME_PRESETS = {
     text: "#EFFFF8",
     muted_text: "#9BD9BD",
     danger: "#FF5B5B",
+  },
+  pink: {
+    accent: "#FF4DB8",
+    bg: "#12070C",
+    panel: "#1A0B12",
+    panel2: "#14080E",
+    text: "#FFF2F8",
+    muted_text: "#E0B7C9",
+    danger: "#FF5B7A",
+  },
+  orange: {
+    accent: "#FF8A00",
+    bg: "#120B06",
+    panel: "#1A120A",
+    panel2: "#140E08",
+    text: "#FFF7EE",
+    muted_text: "#E1C3A8",
+    danger: "#FF5B3D",
   },
 };
 
@@ -1168,7 +1187,7 @@ function fillSettings(cfg) {
   if (!cfg) return;
 
   const themeName = String(cfg.theme_name || "niklaser").trim();
-  const isKnown = ["niklaser", "red", "neo_blue", "violet", "terminal", "custom"].includes(themeName);
+  const isKnown = ["niklaser", "red", "neo_blue", "violet", "terminal", "pink", "orange", "custom"].includes(themeName);
   const preset = isKnown ? themeName : "custom";
 
   if ($("#setLanguage")) $("#setLanguage").value = cfg.language || "ru";
@@ -1394,7 +1413,7 @@ async function main() {
     if ($("#infoLogFile")) $("#infoLogFile").textContent = state.info.log_path || "—";
     if ($("#infoDownloadsDir")) $("#infoDownloadsDir").textContent = state.info.downloads_dir || "—";
 
-    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser`;
+    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser | onejeuu`;
 
     if ($("#setDefaultZipDir") && !$("#setDefaultZipDir").value) {
       $("#setDefaultZipDir").value = state.info.downloads_dir || "";

@@ -21,6 +21,7 @@ const I18N = {
     nav_settings: "Настройки",
     nav_logs: "Логи",
     nav_about: "О программе",
+    brand_subtitle: "<b>Niklaser</b> | <b>onejeuu</b>",
 
     convert_files_title: "Файлы",
     convert_options_title: "Опции",
@@ -59,14 +60,22 @@ const I18N = {
     btn_refresh: "Обновить",
 
     about_title: "О программе",
-    about_sub: "Niklaser edition",
+    about_sub: "Niklaser | onejeuu",
     about_body:
-      "SC-FILE:MODDED — это модифицированная утилита sc-file для преобразования содержимого (файлов) игры Stalcraft:X в стандартные для пользователя форматы.",
+      "SC-FILE:MODDED — это модифицированная утилита sc-file для преобразования содержимого (файлов) игры Stalcraft:X в стандартные для пользователя форматы на базе оригинального проекта onejeuu.",
     about_warning: "ОТВЕТСТВЕННОСТЬ ЗА ВАШИ ДЕЙСТВИЯ АВТОР ПРОГРАММЫ НЕ НЕСЁТ!",
     about_more_1:
       "Проект ориентирован на локальную работу: всё обрабатывается на твоём ПК, без отправки файлов в интернет. Это ускоряет конвертацию и даёт контроль над результатом.",
     about_more_2:
-      "Основная идея — удобный интерфейс для пакетной обработки ассетов, быстрый доступ к логам и гибкая настройка. Используй готовые темы или сделай свой стиль.",
+      "Основная идея — собрать конвертер и Map Merge в одном окне, чтобы не прыгать между разными утилитами. Интерфейс даёт быстрый доступ к логам, понятные настройки и аккуратную визуальную часть.",
+    about_focus_title: "Фокус проекта",
+    about_focus_text:
+      "Локальная конвертация ассетов STALCRAFT:X с пакетной обработкой, ZIP/папкой вывода и контролем параметров.",
+    about_workflow_title: "Как работать",
+    about_workflow_text:
+      "1) Выбери файлы → 2) Выбери формат → 3) Укажи ZIP/папку → 4) Запусти → 5) Открой результат.",
+    about_more_list:
+      "• Поддержка популярных форматов ассетов STALCRAFT:X<br />• Пакетная обработка, выбор ZIP или папки<br />• Настраиваемые темы, фон, язык, шрифты<br />• Подробные логи для диагностики",
     about_badge_web: "Web UI",
     about_badge_logs: "Логи",
     about_badge_batch: "Batch",
@@ -79,7 +88,9 @@ const I18N = {
     about_feat_2_text: "Склейка регионов карты в изображения.",
     about_feat_3_title: "Кастомизация",
     about_feat_3_text: "Темы, фон, язык и параметры вывода.",
-    about_author: "Автор программы: <b>Niklaser</b>.",
+    about_author: "Авторы программы: <b>Niklaser</b> | <b>onejeuu</b>.",
+    about_scfile_link: "Оригинальный SC-FILE",
+    about_scmapmerge_link: "Оригинальный SC-MAPMERGE",
     about_theme: "Основная тема: <span class=\"mono\">жёлтый / чёрный / белый</span>. Настраивается в разделе «Настройки».",
 
     ph_folder_path: "Например: D:\\\\output\\\\scfile",
@@ -136,6 +147,7 @@ const I18N = {
     set_motion: "Анимации",
     set_reduce_motion: "Уменьшить",
     set_saved_hint: "Настройки сохраняются в профиле пользователя.",
+    set_authors: "Авторы: <b>Niklaser</b> | <b>onejeuu</b>.",
 
     set_info_title: "Информация",
     set_version: "Версия",
@@ -191,9 +203,10 @@ const I18N = {
       "• ZIP по умолчанию сохраняется в «Загрузки».<br />• Если файл не появился — открой «Логи приложения».<br />• Для репорта ошибок приложи лог-файл.",
 
     set_actions_title: "Действия",
+    btn_apply: "Применить",
     btn_save: "Сохранить",
-    btn_reset_all: "Сброс",
-    settings_footer_hint: "Сохранение применяет изменения сразу.",
+    btn_reset_all: "Настройки по умолчанию",
+    settings_footer_hint: "Кнопки «Применить» и «Сохранить» применяют изменения сразу.",
     btn_delete: "Удалить",
     btn_download: "Скачать",
 
@@ -211,6 +224,7 @@ const I18N = {
     loading_info: "Загрузка информации…",
 
     toast_settings_saved: "Настройки сохранены",
+    toast_settings_applied: "Изменения применены",
     toast_settings_failed: "Не удалось сохранить настройки",
     toast_bg_uploaded: "Фон обновлён",
     toast_bg_removed: "Фон удалён",
@@ -226,6 +240,7 @@ const I18N = {
     nav_settings: "Settings",
     nav_logs: "Logs",
     nav_about: "About",
+    brand_subtitle: "<b>Niklaser</b> | <b>onejeuu</b>",
 
     convert_files_title: "Files",
     convert_options_title: "Options",
@@ -264,14 +279,22 @@ const I18N = {
     btn_refresh: "Refresh",
 
     about_title: "About",
-    about_sub: "Niklaser edition",
+    about_sub: "Niklaser | onejeuu",
     about_body:
-      "SC-FILE:MODDED is a modified sc-file utility that converts Stalcraft:X game assets into standard user-friendly formats.",
+      "SC-FILE:MODDED is a modified sc-file utility that converts Stalcraft:X game assets into standard user-friendly formats, based on onejeuu's original project.",
     about_warning: "THE AUTHOR IS NOT RESPONSIBLE FOR YOUR ACTIONS!",
     about_more_1:
       "This project is built for local use: everything is processed on your PC, with no file uploads. That speeds up conversion and keeps you in control.",
     about_more_2:
-      "The goal is a clean UI for batch processing, fast access to logs, and flexible settings. Use presets or build your own style.",
+      "The goal is to bundle Converter and Map Merge in one window so you don't have to jump between tools. The UI keeps logs close, settings clear, and visuals clean.",
+    about_focus_title: "Project focus",
+    about_focus_text:
+      "Local STALCRAFT:X asset conversion with batch processing, ZIP/folder output, and precise option control.",
+    about_workflow_title: "Workflow",
+    about_workflow_text:
+      "1) Pick files → 2) Choose format → 3) ZIP or folder → 4) Run → 5) Open results.",
+    about_more_list:
+      "• Popular STALCRAFT:X asset formats support<br />• Batch processing, ZIP or folder output<br />• Themes, background, language, fonts<br />• Detailed logs for troubleshooting",
     about_badge_web: "Web UI",
     about_badge_logs: "Logs",
     about_badge_batch: "Batch",
@@ -284,7 +307,9 @@ const I18N = {
     about_feat_2_text: "Stitches map regions into images.",
     about_feat_3_title: "Customization",
     about_feat_3_text: "Themes, background, language, and output options.",
-    about_author: "Program author: <b>Niklaser</b>.",
+    about_author: "Program authors: <b>Niklaser</b> | <b>onejeuu</b>.",
+    about_scfile_link: "Original SC-FILE",
+    about_scmapmerge_link: "Original SC-MAPMERGE",
     about_theme: "Main theme: <span class=\"mono\">yellow / black / white</span>. Configure it in Settings.",
 
     ph_folder_path: "e.g. D:\\\\output\\\\scfile",
@@ -341,6 +366,7 @@ const I18N = {
     set_motion: "Animations",
     set_reduce_motion: "Reduce",
     set_saved_hint: "Settings are stored per-user.",
+    set_authors: "Authors: <b>Niklaser</b> | <b>onejeuu</b>.",
 
     set_info_title: "Info",
     set_version: "Version",
@@ -396,9 +422,10 @@ const I18N = {
       "• ZIP is saved to Downloads by default.<br />• If the file doesn’t appear — open App logs.<br />• For bug reports attach the log file.",
 
     set_actions_title: "Actions",
+    btn_apply: "Apply",
     btn_save: "Save",
-    btn_reset_all: "Reset",
-    settings_footer_hint: "Saving applies changes immediately.",
+    btn_reset_all: "Default settings",
+    settings_footer_hint: "Both Apply and Save apply changes immediately.",
     btn_delete: "Delete",
     btn_download: "Download",
 
@@ -416,6 +443,7 @@ const I18N = {
     loading_info: "Loading info…",
 
     toast_settings_saved: "Settings saved",
+    toast_settings_applied: "Changes applied",
     toast_settings_failed: "Failed to save settings",
     toast_bg_uploaded: "Background updated",
     toast_bg_removed: "Background removed",
@@ -742,6 +770,7 @@ function applyBackground(cfg) {
   root.style.setProperty("--bg-image", enabled && url ? `url("${url}")` : "none");
   root.style.setProperty("--bg-image-opacity", String(cfg?.background_opacity ?? 0.22));
   root.style.setProperty("--bg-image-blur", `${cfg?.background_blur ?? 0}px`);
+  root.classList.toggle("has-custom-bg", !!(enabled && url));
 }
 
 function applyMotion(cfg) {
@@ -832,6 +861,24 @@ const THEME_PRESETS = {
     text: "#EFFFF8",
     muted_text: "#9BD9BD",
     danger: "#FF5B5B",
+  },
+  pink: {
+    accent: "#FF4DB8",
+    bg: "#12070C",
+    panel: "#1A0B12",
+    panel2: "#14080E",
+    text: "#FFF2F8",
+    muted_text: "#E0B7C9",
+    danger: "#FF5B7A",
+  },
+  orange: {
+    accent: "#FF8A00",
+    bg: "#120B06",
+    panel: "#1A120A",
+    panel2: "#140E08",
+    text: "#FFF7EE",
+    muted_text: "#E1C3A8",
+    danger: "#FF5B3D",
   },
 };
 
@@ -1281,7 +1328,7 @@ function fillSettings(cfg) {
   if (!cfg) return;
 
   const themeName = String(cfg.theme_name || "niklaser").trim();
-  const isKnown = ["niklaser", "red", "neo_blue", "violet", "terminal", "custom"].includes(themeName);
+  const isKnown = ["niklaser", "red", "neo_blue", "violet", "terminal", "pink", "orange", "custom"].includes(themeName);
   const preset = isKnown ? themeName : "custom";
 
   if ($("#setLanguage")) $("#setLanguage").value = cfg.language || "ru";
@@ -1516,7 +1563,7 @@ async function main() {
     if ($("#infoLogFile")) $("#infoLogFile").textContent = state.info.log_path || "—";
     if ($("#infoDownloadsDir")) $("#infoDownloadsDir").textContent = state.info.downloads_dir || "—";
 
-    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser`;
+    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser | onejeuu`;
 
     if ($("#setDefaultZipDir") && !$("#setDefaultZipDir").value) {
       $("#setDefaultZipDir").value = state.info.downloads_dir || "";
@@ -1723,6 +1770,17 @@ async function main() {
       try {
         await saveSettings();
         notify("success", t("toast_settings_saved"));
+      } catch (err) {
+        notify("error", `${t("toast_settings_failed")}: ${err?.message || err}`);
+      }
+    };
+  }
+
+  if ($("#btnApplySettings")) {
+    $("#btnApplySettings").onclick = async () => {
+      try {
+        await saveSettings();
+        notify("success", t("toast_settings_applied"));
       } catch (err) {
         notify("error", `${t("toast_settings_failed")}: ${err?.message || err}`);
       }

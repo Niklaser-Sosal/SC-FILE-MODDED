@@ -112,6 +112,31 @@ body::after {
     linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.55));
 }
 
+.anime-bg {
+  position: fixed;
+  right: 18px;
+  bottom: 16px;
+  width: min(220px, 36vw);
+  height: min(300px, 40vh);
+  background: var(--accent);
+  mask-image: url("/static/anime.svg");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: right bottom;
+  -webkit-mask-image: url("/static/anime.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: right bottom;
+  opacity: 0.18;
+  filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.24));
+  pointer-events: none;
+  z-index: -1;
+}
+
+.has-custom-bg .anime-bg {
+  opacity: 0;
+}
+
 .no-glow {
   --accent-glow: rgba(0, 0, 0, 0);
   --shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
@@ -674,6 +699,45 @@ body::after {
   color: var(--muted);
 }
 
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.about-panel {
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.about-panel-title {
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.about-panel-text {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.about-list {
+  margin-top: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
 .alert {
   display: flex;
   align-items: center;
@@ -697,6 +761,38 @@ body::after {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.about-project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 140ms ease, background 140ms ease, transform 120ms ease;
+}
+
+.project-link:hover {
+  border-color: var(--accent-35);
+  background: var(--accent-07);
+  transform: translateY(-1px);
+}
+
+.project-link-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
 }
 
 .badge {

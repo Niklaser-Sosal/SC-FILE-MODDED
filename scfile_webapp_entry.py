@@ -29,6 +29,12 @@ def _detect_static_dir() -> Path | None:
     return None
 
 
+def _runtime_root() -> Path:
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="scfile-web", description="SC-FILE Web UI (desktop)")
     parser.add_argument("--host", default="127.0.0.1")
@@ -42,7 +48,9 @@ def main(argv: list[str] | None = None) -> None:
         icon = static_dir / "app_icon.ico"
         if icon.exists():
             os.environ.setdefault("SCFILE_WEB_APP_ICON", str(icon))
-        os.environ.setdefault("SCFILE_LOGS_DIR", str(static_dir.parent.parent / "logs"))
+
+    logs_dir = _runtime_root() / "logs"
+    os.environ.setdefault("SCFILE_LOGS_DIR", str(logs_dir))
 
     from scfile.webapp.runner import run
 

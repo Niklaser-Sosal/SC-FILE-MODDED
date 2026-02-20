@@ -1,8 +1,7 @@
 # SC-FILE:MODDED
 
 <p align="center">
-  <img src="webapp/static/app_icon.png" alt="SC-FILE:MODDED" width="96" height="96" />
-  <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="28" height="28" />
+  <img src="webapp/static/app_icon.png" alt="SC-FILE:MODDED" width="148" height="148" />
 </p>
 
 <p align="center">
@@ -13,27 +12,56 @@
   <img alt="Status" src="https://img.shields.io/badge/status-stable-yellow?style=flat-square" />
 </p>
 
-Модифицированная версия `sc-file` с современным Web UI и desktop-окном (pywebview).  
-Проект ориентирован на локальную работу: файлы обрабатываются на вашем ПК.
+<p align="center">
+  <a href="https://github.com/onejeuu/sc-file" target="_blank" rel="noopener noreferrer">
+    <img src="webapp/static/scfile_original.svg" alt="Original SC-FILE" width="64" height="64" />
+  </a>
+  <a href="https://github.com/onejeuu/sc-mapmerge" target="_blank" rel="noopener noreferrer">
+    <img src="webapp/static/icon_scmapmerge.svg" alt="Original SC-MAPMERGE" width="64" height="64" />
+  </a>
+  <a href="https://github.com/Niklaser-Sosal/SC-FILE-MODDED" target="_blank" rel="noopener noreferrer">
+    <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="38" height="38" />
+  </a>
+</p>
+
+<p align="center">
+  <img src="preview.png" alt="Preview" width="1080" />
+</p>
+
+<p align="center">
+  <img src="convert.png" alt="Convert" width="1080" />
+</p>
+
+<p align="center">
+  <img src="nastroyki.png" alt="Settings" width="1080" />
+</p>
+
+## О программе
+
+**SC-FILE:MODDED** — модифицированная версия `sc-file` с современным Web UI и desktop-окном (pywebview).  
+Проект ориентирован на локальную работу: все файлы обрабатываются на вашем ПК без отправки в сеть.  
+Основная цель — удобный интерфейс для массовой конвертации ассетов, быстрый доступ к логам и гибкая настройка внешнего вида.  
+Интерфейс поддерживает темы, фон, выбор шрифтов, а также упрощённый контроль параметров конвертации.  
+Поддерживается пакетная обработка файлов и работа как в режиме ZIP, так и в режиме вывода в выбранную папку.  
+В данной версии используется оригинальная сборка `sc-file 4.1.2`.
+
+## Авторы
+
+`Niklaser` — модифицированная версия | `onejeuu` — оригинальная версия
+
+Спасибо `onejeuu` за открытый исходный код:
+- [SC-FILE (original)](https://github.com/onejeuu/sc-file)
+- [SC-MAPMERGE (original)](https://github.com/onejeuu/sc-mapmerge)
 
 ## Возможности
 
 - Пакетная конвертация ассетов в ZIP или папку
 - Map Merge (склейка регионов карты в изображения)
 - Темы, фон, язык, настройки вывода
+- Подсветка интерфейса и выбор шрифтов
+- Фоновое изображение с настройкой прозрачности/размытия
 - Логи и журнал задач
 - Desktop-окно (pywebview) или запуск в браузере
-
-## Структура
-
-```
-sc-file-4.2.1/          # исходники sc-file
-sc-mapmerge-2.1.1/      # исходники sc-mapmerge
-webapp/static/          # фронтенд (HTML/CSS/JS + ассеты)
-scfile-web.bat          # запуск Web UI (Windows)
-scfile-setup.bat        # установка зависимостей (Windows)
-build.py                # сборка exe через PyInstaller
-```
 
 ## Быстрый старт (Windows)
 
@@ -86,12 +114,16 @@ python3.11 -m venv sc-file-4.2.1/.venv
 
 ## Логи
 
-По умолчанию логи сохраняются в `logs/` рядом с `.bat`:
+По умолчанию логи сохраняются в `logs/` рядом с `.bat` и `.exe`:
 
 ```
 logs/sc-file-web.log
 ```
 
+## Релизы
+
+- [GitHub Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
+
 ## Лицензия и ответственность
 
-Проект предоставляется «как есть». Автор программы не несёт ответственности за ваши действия.
+Проект предоставляется «как есть». Авторы программы не несут ответственности за ваши действия.

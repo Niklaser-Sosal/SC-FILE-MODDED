@@ -16,6 +16,12 @@ def _resource_base() -> Path:
     return ROOT
 
 
+def _runtime_root() -> Path:
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return ROOT
+
+
 def _ensure_dev_import_paths() -> None:
     # When running from sources (not frozen), add local project folders so imports work.
     if getattr(sys, "frozen", False):
@@ -36,7 +42,7 @@ def _configure_env() -> None:
     icon = static_dir / "app_icon.ico"
     if icon.exists():
         os.environ.setdefault("SCFILE_WEB_APP_ICON", str(icon))
-    logs_dir = base / "logs"
+    logs_dir = _runtime_root() / "logs"
     os.environ.setdefault("SCFILE_LOGS_DIR", str(logs_dir))
 
 

@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
+    <div class="anime-bg" aria-hidden="true"></div>
     <div class="app">
       <aside class="sidebar">
         <div class="brand">
           <img class="brand-icon" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
           <div class="brand-text">
             <div class="brand-title">SC-FILE:MODDED</div>
-            <div class="brand-subtitle">By • Niklaser</div>
+            <div class="brand-subtitle" data-i18n-html="brand_subtitle">Niklaser | onejeuu</div>
           </div>
         </div>
 
@@ -509,7 +510,7 @@
                     </button>
                   </div>
                   <div class="divider"></div>
-                  <div class="hint">Автор программы: <b>Niklaser</b>.</div>
+                  <div class="hint" data-i18n-html="set_authors">Авторы: <b>Niklaser</b> | <b>onejeuu</b>.</div>
                 </div>
               </div>
             </div>
@@ -527,6 +528,8 @@
                         <option value="neo_blue">Neo Blue</option>
                         <option value="violet">Violet</option>
                         <option value="terminal">Terminal Green</option>
+                        <option value="pink">Neon Pink</option>
+                        <option value="orange">Solar Orange</option>
                         <option value="custom" data-i18n="theme_custom">Custom</option>
                       </select>
                     </div>
@@ -732,6 +735,10 @@
                 <div class="card settings-footer">
                   <div class="card-title" data-i18n="set_actions_title">Действия</div>
                   <div class="row wrap">
+                    <button class="btn" id="btnApplySettings">
+                      <svg class="icon"><use href="/static/icons.svg#check"></use></svg>
+                      <span data-i18n="btn_apply">Применить</span>
+                    </button>
                     <button class="btn primary" id="btnSaveSettings">
                       <svg class="icon"><use href="/static/icons.svg#save"></use></svg>
                       <span data-i18n="btn_save">Сохранить</span>
@@ -768,7 +775,7 @@
                 <img class="about-icon" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
                 <div>
                   <div class="about-title" data-i18n="about_title">О программе</div>
-                  <div class="about-sub" data-i18n="about_sub">SC-FILE:MODDED</div>
+                  <div class="about-sub" data-i18n="about_sub">Niklaser | onejeuu</div>
                 </div>
               </div>
               <div class="about-actions">
@@ -793,12 +800,47 @@
                 Это ускоряет конвертацию и даёт контроль над результатом.
               </div>
               <div class="about-paragraph" data-i18n-html="about_more_2">
-                Основная идея — удобный интерфейс для пакетной обработки ассетов, быстрый доступ к логам и гибкая настройка.
-                Используй готовые темы или сделай свой стиль.
+                Основная идея — собрать конвертер и Map Merge в одном окне, чтобы не прыгать между разными утилитами.
+                Интерфейс даёт быстрый доступ к логам, понятные настройки и аккуратную визуальную часть.
               </div>
+
+              <div class="about-grid">
+                <div class="about-panel">
+                  <div class="about-panel-title" data-i18n="about_focus_title">Фокус проекта</div>
+                  <div class="about-panel-text" data-i18n-html="about_focus_text">
+                    Локальная конвертация ассетов STALCRAFT:X с пакетной обработкой, ZIP/папкой вывода и контролем параметров.
+                  </div>
+                </div>
+                <div class="about-panel">
+                  <div class="about-panel-title" data-i18n="about_workflow_title">Как работать</div>
+                  <div class="about-panel-text" data-i18n-html="about_workflow_text">
+                    1) Выбери файлы → 2) Выбери формат → 3) Укажи ZIP/папку → 4) Запусти → 5) Открой результат.
+                  </div>
+                </div>
+              </div>
+
+              <div class="about-list" data-i18n-html="about_more_list">
+                • Поддержка популярных форматов ассетов STALCRAFT:X<br />
+                • Пакетная обработка, выбор ZIP или папки<br />
+                • Настраиваемые темы, фон, язык, шрифты<br />
+                • Подробные логи для диагностики
+              </div>
+
               <div class="alert warn" data-i18n-html="about_warning">
                 ОТВЕТСТВЕННОСТЬ ЗА ВАШИ ДЕЙСТВИЯ АВТОР ПРОГРАММЫ НЕ НЕСЁТ!
               </div>
+
+              <div class="about-project-links">
+                <a class="project-link" href="https://github.com/onejeuu/sc-file" target="_blank" rel="noopener">
+                  <img class="project-link-icon" src="/static/scfile_original.svg" alt="SC-FILE" />
+                  <span data-i18n="about_scfile_link">Оригинальный SC-FILE</span>
+                </a>
+                <a class="project-link" href="https://github.com/onejeuu/sc-mapmerge" target="_blank" rel="noopener">
+                  <img class="project-link-icon" src="/static/icon_scmapmerge.svg" alt="SC-MAPMERGE" />
+                  <span data-i18n="about_scmapmerge_link">Оригинальный SC-MAPMERGE</span>
+                </a>
+              </div>
+
               <div class="about-badges">
                 <div class="badge">
                   <svg class="icon"><use href="/static/icons.svg#info"></use></svg>
@@ -843,7 +885,7 @@
               </div>
 
               <div class="divider"></div>
-              <div class="hint" data-i18n-html="about_author">Автор программы: <b>Niklaser</b>.</div>
+              <div class="hint" data-i18n-html="about_author">Авторы программы: <b>Niklaser</b> | <b>onejeuu</b>.</div>
               <div class="hint" data-i18n-html="about_theme">
                 Основная тема: <span class="mono">жёлтый / чёрный / белый</span>. Настраивается в разделе «Настройки».
               </div>
@@ -868,7 +910,7 @@
           <img class="brand-icon big" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
           <div>
             <div class="loading-title">SC-FILE:MODDED</div>
-            <div class="loading-sub">Niklaser edition</div>
+            <div class="loading-sub">Niklaser | onejeuu</div>
           </div>
         </div>
         <div class="loading-spinner" aria-hidden="true"></div>
