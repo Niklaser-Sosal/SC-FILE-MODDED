@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SC-FILE:MODDED • Map View</title>
+    <link rel="icon" type="image/png" href="/static/app_icon.png" />
+    <style>
+      :root {
+        --accent: #ffd400;
+        --bg: #0b0b0b;
+        --panel: #121212;
+        --panel2: #1b1f2a;
+        --text: #fff;
+        --muted: #cfcfcf;
+        --border: rgba(255, 212, 0, 0.24);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background:
+          radial-gradient(1200px 800px at 10% 0%, rgba(255, 212, 0, 0.11), transparent 56%),
+          linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.72)),
+          var(--bg);
+        color: var(--text);
+        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      }
+      .app {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto auto;
+        gap: 8px;
+        height: 100%;
+        padding: 12px;
+      }
+      .card {
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.2));
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.42);
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 12px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+      .brand img {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(0, 0, 0, 0.22);
+      }
+      .brand-text {
+        min-width: 0;
+        display: grid;
+        gap: 1px;
+      }
+      .title {
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        font-size: 28px;
+        line-height: 1;
+      }
+      .subtitle {
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .btn {
+        all: unset;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 9px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        font-size: 12.5px;
+        font-weight: 700;
+        line-height: 1;
+      }
+      .btn:hover {
+        border-color: var(--border);
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: #000;
+        border-color: rgba(0, 0, 0, 0.3);
+      }
+      .meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+        gap: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      .meta-item {
+        padding: 12px 14px;
+        min-width: 0;
+      }
+      .meta-item + .meta-item {
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .meta-label {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+      }
+      .meta-value {
+        margin-top: 4px;
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+        font-size: 25px;
+        font-weight: 700;
+        word-break: break-word;
+        line-height: 1.1;
+      }
+      .viewer {
+        min-height: 0;
+        display: grid;
+        grid-template-rows: auto 1fr;
+        overflow: hidden;
+      }
+      .toolbar {
+        padding: 8px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08));
+      }
+      .toolbar-left,
+      .toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .toolbar-right {
+        justify-content: flex-end;
+        min-width: 0;
+      }
+      #zoomRange {
+        width: min(360px, 34vw);
+      }
+      .btn-icon {
+        min-width: 32px;
+        text-align: center;
+        padding: 8px 0;
+      }
+      .toolbar-tag {
+        padding: 7px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(0, 0, 0, 0.28);
+        color: var(--muted);
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .progress-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .progress-track {
+        width: 172px;
+        height: 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--accent), #fff08a);
+        transition: width 180ms ease;
+      }
+      .zoom-label {
+        min-width: 64px;
+        text-align: right;
+        color: #8bc0ff;
+        font-weight: 900;
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+      }
+      .viewport {
+        position: relative;
+        overflow: hidden;
+        min-height: 0;
+        background:
+          linear-gradient(45deg, rgba(255, 255, 255, 0.045) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.045) 75%),
+          linear-gradient(45deg, rgba(255, 255, 255, 0.045) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.045) 75%),
+          rgba(0, 0, 0, 0.26);
+        background-size: 22px 22px;
+        background-position: 0 0, 11px 11px;
+        cursor: grab;
+        contain: strict;
+      }
+      .viewport.dragging {
+        cursor: grabbing;
+      }
+      #mapCanvas {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-origin: 0 0;
+        will-change: transform;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      #mapImage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        max-width: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        transition: filter 120ms linear;
+        pointer-events: none;
+      }
+      #mapImage.low-detail {
+        filter: blur(var(--lod-blur, 0px)) saturate(var(--lod-sat, 1)) contrast(var(--lod-contrast, 1));
+      }
+      #tileLayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+      }
+      .map-tile {
+        position: absolute;
+        display: block;
+        object-fit: fill;
+        user-select: none;
+        -webkit-user-drag: none;
+        image-rendering: auto;
+        pointer-events: none;
+      }
+      .minimap {
+        position: absolute;
+        right: 14px;
+        bottom: 14px;
+        width: 148px;
+        height: 110px;
+        border-radius: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: rgba(19, 22, 28, 0.82);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        z-index: 5;
+      }
+      .minimap img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        opacity: 0.82;
+        display: block;
+      }
+      .minimap-rect {
+        position: absolute;
+        border: 1px solid #0ea5ff;
+        box-shadow: 0 0 0 1px rgba(14, 165, 255, 0.25) inset;
+        pointer-events: none;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 12px;
+        text-transform: uppercase;
+        padding: 4px 3px 0;
+      }
+      .status {
+        min-height: 20px;
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 0 6px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      @media (max-width: 1080px) {
+        .meta {
+          grid-template-columns: 1fr;
+        }
+        .meta-item + .meta-item {
+          border-left: 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .title {
+          font-size: 20px;
+        }
+        .meta-value {
+          font-size: 18px;
+        }
+        .toolbar {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .toolbar-left,
+        .toolbar-right {
+          justify-content: space-between;
+        }
+        #zoomRange {
+          width: 100%;
+        }
+        .progress-track {
+          width: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="card head">
+        <div class="brand">
+          <img src="/static/icon_scmapmerge.svg" alt="SC-MAPMERGE" />
+          <div class="brand-text">
+            <div class="title" id="title">Осмотр карты</div>
+            <div class="subtitle" id="subtitle">Map Merge result inspector</div>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="btn" id="btnDownload" target="_blank" rel="noopener">Скачать</a>
+          <button class="btn" id="btnSaveDownloads" type="button">Сохранить в Загрузки</button>
+          <a class="btn primary" id="btnZip" target="_blank" rel="noopener">Сохранить в ZIP</a>
+        </div>
+      </div>
+
+      <div class="card meta">
+        <div class="meta-item">
+          <div class="meta-label" id="metaFileLabel">Название файла</div>
+          <div class="meta-value" id="metaFileName">—</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label" id="metaPixelsLabel">Кол-во пикселей</div>
+          <div class="meta-value" id="metaPixels">—</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label" id="metaSizeLabel">Размер</div>
+          <div class="meta-value" id="metaSize">—</div>
+        </div>
+      </div>
+
+      <div class="card viewer">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <button class="btn btn-icon" id="btnZoomOut" type="button">−</button>
+            <input id="zoomRange" type="range" min="5" max="800" step="1" value="100" />
+            <button class="btn btn-icon" id="btnZoomIn" type="button">+</button>
+            <button class="btn" id="btnFit" type="button">Fit</button>
+            <button class="btn" id="btnReset" type="button">100%</button>
+            <div class="zoom-label" id="zoomLabel">100%</div>
+          </div>
+          <div class="toolbar-right">
+            <div class="toolbar-tag" id="cursorTag">x: — | y: —</div>
+            <div class="progress-wrap">
+              <div class="progress-track"><div class="progress-fill" id="tileProgressBar"></div></div>
+              <div class="toolbar-tag" id="tileProgressText">0%</div>
+            </div>
+            <button class="btn btn-icon" id="btnFullscreen" type="button">⛶</button>
+          </div>
+        </div>
+        <div class="viewport" id="viewport">
+          <div id="mapCanvas">
+            <img id="mapImage" alt="map" decoding="async" loading="eager" />
+            <div id="tileLayer"></div>
+          </div>
+          <div class="minimap" id="miniMap">
+            <img id="miniMapImage" alt="mini-map" />
+            <div class="minimap-rect" id="miniMapRect"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div id="footerLeft">СТАТУС СИСТЕМЫ: ГОТОВ</div>
+        <div id="footerRight">SC-FILE:MODDED MAP INSPECTOR</div>
+      </div>
+      <div class="status" id="status"></div>
+    </div>
+    <script type="module" src="/static/map_view.js"></script>
+  </body>
+</html>

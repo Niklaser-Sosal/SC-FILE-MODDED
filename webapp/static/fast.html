@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SC-FILE:MODDED • Fast</title>
+    <meta name="theme-color" content="#0B0B0B" />
+    <link rel="icon" href="/static/app_icon.png" type="image/png" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="anime-bg" aria-hidden="true"></div>
+    <div class="app fast-only">
+      <main class="main">
+        <header class="topbar">
+          <div class="row">
+            <img class="brand-icon" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
+            <div>
+              <div class="brand-title">SC-FILE:MODDED</div>
+              <div class="brand-subtitle" data-i18n-html="brand_subtitle">Niklaser | onejeuu</div>
+            </div>
+            <span class="pill subtle" data-i18n="home_badge_fast">Fast</span>
+          </div>
+          <div class="topbar-actions">
+            <div class="segmented topbar-lang" id="topLangToggle" aria-label="Language">
+              <label class="seg">
+                <input type="radio" name="topLang" value="ru" checked />
+                <span>RU</span>
+              </label>
+              <label class="seg">
+                <input type="radio" name="topLang" value="en" />
+                <span>EN</span>
+              </label>
+            </div>
+            <a class="btn ghost" id="btnFullMode" href="/">
+              <svg class="icon"><use href="/static/icons.svg#settings"></use></svg>
+              <span data-i18n="fast_full">Полный режим</span>
+            </a>
+            <div class="pill subtle" id="appInfo">—</div>
+          </div>
+        </header>
+
+        <section class="view active" id="view-convert">
+          <div class="card fast-card hidden" id="fastCard">
+            <div class="fast-head">
+              <div>
+                <div class="card-title" data-i18n="fast_title">Fast Module</div>
+                <div class="hint" data-i18n="fast_desc">Открытые файлы уже готовы к конвертации.</div>
+              </div>
+            </div>
+            <div class="fast-list" id="fastFileList"></div>
+            <div class="row wrap">
+              <button class="btn primary" id="btnFastStart">
+                <svg class="icon"><use href="/static/icons.svg#play"></use></svg>
+                <span data-i18n="fast_start">Конвертировать</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="card-title" data-i18n="convert_files_title">Файлы</div>
+              <div class="row">
+                <button class="btn" id="btnAddFiles">
+                  <svg class="icon"><use href="/static/icons.svg#file-plus"></use></svg>
+                  <span data-i18n="btn_add_files">Добавить файлы</span>
+                </button>
+                <button class="btn" id="btnAddFolder">
+                  <svg class="icon"><use href="/static/icons.svg#folder-plus"></use></svg>
+                  <span data-i18n="btn_add_folder">Добавить папку</span>
+                </button>
+                <button class="btn ghost" id="btnClearFiles">
+                  <svg class="icon"><use href="/static/icons.svg#trash"></use></svg>
+                  <span data-i18n="btn_clear">Очистить</span>
+                </button>
+              </div>
+              <input id="inputFiles" type="file" multiple hidden />
+              <input id="inputFolder" type="file" multiple webkitdirectory hidden />
+
+              <div class="hint" data-i18n-html="convert_support_hint">
+                Поддержка: <span class="mono">.mcsb .mcsa .mcvd .ol .mic .texarr</span> и NBT
+              </div>
+
+              <div class="file-list dropzone" id="fileList" data-drop="convert"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title" data-i18n="convert_options_title">Опции</div>
+
+              <div class="form">
+                <div class="form-row">
+                  <label class="label" data-i18n="label_output">Вывод</label>
+                  <div class="segmented">
+                    <label class="seg">
+                      <input type="radio" name="outputMode" value="zip" checked />
+                      <span>ZIP</span>
+                    </label>
+                    <label class="seg">
+                      <input type="radio" name="outputMode" value="folder" />
+                      <span data-i18n="output_folder">Папка</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-row" id="rowOutputDir">
+                  <label class="label" for="outputDir" data-i18n="label_folder">Папка</label>
+                  <input class="input" id="outputDir" placeholder="Например: D:\\output\\scfile" data-i18n-placeholder="ph_folder_path" />
+                </div>
+
+                <div class="form-row">
+                  <label class="label" data-i18n="label_models">Модели</label>
+                  <div class="chips">
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="glb" checked /> GLB</label>
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="obj" /> OBJ</label>
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="dae" /> DAE</label>
+                    <label class="chip"><input type="checkbox" class="mdlFmt" value="ms3d" /> MS3D</label>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <label class="label" data-i18n="set_flags">Флаги</label>
+                  <div class="checks">
+                    <label class="check"><input type="checkbox" id="optPreserve" checked /> <span data-i18n="flag_preserve">Сохранять структуру</span></label>
+                    <label class="check"><input type="checkbox" id="optUnique" checked /> <span data-i18n="flag_unique">Уникальные имена</span></label>
+                    <label class="check"><input type="checkbox" id="optSkeleton" checked /> <span data-i18n="flag_skeleton">Скелет</span></label>
+                    <label class="check"><input type="checkbox" id="optAnimation" /> <span data-i18n="flag_anim">Анимации</span></label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <button class="btn primary" id="btnStartConvert">
+                    <svg class="icon"><use href="/static/icons.svg#play"></use></svg>
+                    <span data-i18n="btn_convert">Конвертировать</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title" data-i18n="task_title">Задача</div>
+            <div class="status" id="taskStatus" data-i18n="task_none">Нет активной задачи</div>
+
+            <div class="progress">
+              <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="row wrap">
+              <a class="btn" id="btnDownloadZip" href="#" download style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#download"></use></svg>
+                <span data-i18n="btn_download_zip">Скачать ZIP</span>
+              </a>
+              <button class="btn" id="btnOpenZip" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                <span data-i18n="btn_open_zip">Открыть ZIP</span>
+              </button>
+              <button class="btn" id="btnOpenOutput" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                <span data-i18n="btn_open_folder">Открыть папку</span>
+              </button>
+              <button class="btn ghost" id="btnStopPoll" style="display: none">
+                <svg class="icon"><use href="/static/icons.svg#logs"></use></svg>
+                <span data-i18n="btn_hide_progress">Скрыть прогресс</span>
+              </button>
+            </div>
+
+            <div class="split">
+              <div>
+                <div class="subtle-title" data-i18n="results_title">Результаты</div>
+                <div class="outputs" id="outputsList"></div>
+              </div>
+              <div>
+                <div class="subtle-title" data-i18n="nav_logs">Логи</div>
+                <pre class="logbox" id="taskLogs"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-card">
+        <div class="loading-brand">
+          <img class="brand-icon big" src="/static/app_icon.png" alt="SC-FILE:MODDED" />
+          <div>
+            <div class="loading-title">SC-FILE:MODDED</div>
+            <div class="loading-sub">Niklaser | onejeuu</div>
+          </div>
+        </div>
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <div class="loading-text" id="loadingText">Загрузка…</div>
+        <div class="loading-tip" id="loadingTip"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/static/fast.js"></script>
+  </body>
+</html>

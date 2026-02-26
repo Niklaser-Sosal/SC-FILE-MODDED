@@ -59,6 +59,7 @@
   --bg-image: none;
   --bg-image-opacity: 0;
   --bg-image-blur: 0px;
+  --anime-art: url("/static/man_and_vertolotiki.svg");
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
   --radius: 14px;
   --font: "Europe-Book-Edited", "Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui,
@@ -110,6 +111,31 @@ body::after {
   background: radial-gradient(1200px 800px at 20% 0%, var(--accent-glow), transparent 58%),
     radial-gradient(900px 700px at 80% 10%, rgba(255, 255, 255, 0.06), transparent 60%),
     linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.55));
+}
+
+.anime-bg {
+  position: fixed;
+  right: 18px;
+  bottom: 16px;
+  width: min(220px, 36vw);
+  height: min(300px, 40vh);
+  background: var(--accent);
+  mask-image: var(--anime-art);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: right bottom;
+  -webkit-mask-image: var(--anime-art);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: right bottom;
+  opacity: 0.18;
+  filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.24));
+  pointer-events: none;
+  z-index: -1;
+}
+
+.has-custom-bg .anime-bg {
+  opacity: 0;
 }
 
 .no-glow {
@@ -294,6 +320,36 @@ body::after {
 
 .view.active {
   display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.fast-card {
+  margin-bottom: 16px;
+}
+
+.fast-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.fast-list {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.fast-item {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12.5px;
 }
 
 .grid {
@@ -565,11 +621,11 @@ body::after {
   width: min(520px, 92vw);
   height: 220px;
   background: var(--accent);
-  mask-image: url("/static/anime.svg");
+  mask-image: var(--anime-art);
   mask-repeat: no-repeat;
   mask-size: contain;
   mask-position: center;
-  -webkit-mask-image: url("/static/anime.svg");
+  -webkit-mask-image: var(--anime-art);
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   -webkit-mask-position: center;
@@ -674,6 +730,45 @@ body::after {
   color: var(--muted);
 }
 
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.about-panel {
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.about-panel-title {
+  font-weight: 800;
+  font-size: 12.5px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.about-panel-text {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.about-list {
+  margin-top: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
 .alert {
   display: flex;
   align-items: center;
@@ -697,6 +792,38 @@ body::after {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.about-project-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 140ms ease, background 140ms ease, transform 120ms ease;
+}
+
+.project-link:hover {
+  border-color: var(--accent-35);
+  background: var(--accent-07);
+  transform: translateY(-1px);
+}
+
+.project-link-icon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
 }
 
 .badge {
@@ -844,6 +971,68 @@ body::after {
   margin-bottom: 10px;
 }
 
+.card-title.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title.with-mapmerge-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mapmerge-logo {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: inline-block;
+  filter: drop-shadow(0 0 7px rgba(var(--accent-rgb), 0.3));
+}
+
+.settings-inline-actions {
+  margin-top: 8px;
+}
+
+.label.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex: none;
+}
+
+.settings-icon-mask {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: inline-block;
+  background: var(--accent);
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
+  filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.32));
+}
+
+.settings-icon-fast {
+  mask-image: url("/static/logo_fast_module.svg");
+  -webkit-mask-image: url("/static/logo_fast_module.svg");
+}
+
+.settings-icon-anime {
+  mask-image: url("/static/ANIME_MODE.svg");
+  -webkit-mask-image: url("/static/ANIME_MODE.svg");
+}
+
 .subtle-title {
   color: var(--muted);
   font-weight: 700;
@@ -939,17 +1128,58 @@ body::after {
 }
 
 .file-list {
-  border: 1px dashed rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 10px;
-  min-height: 92px;
+  border: 1px dashed var(--accent-40);
+  border-radius: 18px;
+  padding: 12px;
+  min-height: 210px;
   max-height: 260px;
   overflow: auto;
+  background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.12), rgba(var(--accent-rgb), 0.06));
 }
 
 .dropzone.dragover {
-  border-color: var(--accent-40);
-  background: var(--accent-06);
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.2);
+}
+
+.dropzone-empty {
+  min-height: 180px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.dropzone-empty-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: rgba(var(--accent-rgb), 0.35);
+}
+
+.dropzone-empty-icon .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.dropzone-empty-title {
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
+
+.dropzone-empty-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
 }
 
 .file-item {

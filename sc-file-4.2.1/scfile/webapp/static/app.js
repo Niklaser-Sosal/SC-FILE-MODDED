@@ -1,4 +1,4 @@
-const $ = (sel) => document.querySelector(sel);
+﻿const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
 const state = {
@@ -11,6 +11,7 @@ const state = {
   cfg: null,
   info: null,
   lang: "ru",
+  openFiles: [],
 };
 
 const I18N = {
@@ -21,6 +22,7 @@ const I18N = {
     nav_settings: "Настройки",
     nav_logs: "Логи",
     nav_about: "О программе",
+    brand_subtitle: "<b>Niklaser</b> | <b>onejeuu</b>",
 
     convert_files_title: "Файлы",
     convert_options_title: "Опции",
@@ -39,6 +41,12 @@ const I18N = {
     btn_open_folder: "Открыть папку",
     btn_hide_progress: "Скрыть прогресс",
     results_title: "Результаты",
+    fast_title: "Fast Module",
+    fast_desc: "Открытые файлы уже готовы к конвертации.",
+    fast_full: "Полный режим",
+    fast_start: "Конвертировать",
+    fast_hide: "Скрыть",
+    fast_empty: "Нет файлов для быстрого режима.",
 
     mm_files_title: "Файлы карты",
     mm_support_hint:
@@ -54,22 +62,60 @@ const I18N = {
     mm_overwrite: "Перезаписывать",
     mm_debug: "Debug",
     mm_merge: "Склеить карту",
+    mm_inspect: "Осмотр карты",
+    mdl_inspect: "Осмотр модели",
+    tex_inspect: "Осмотр текстуры",
 
     app_logs_title: "Логи приложения",
     btn_refresh: "Обновить",
 
     about_title: "О программе",
+    about_sub: "Niklaser | onejeuu",
     about_body:
-      "Это локальный web-интерфейс для SC-FILE:MODDED: конвертация ассетов STALCRAFT в стандартные форматы с логами, настройками и пакетной обработкой.",
-    about_author: "Автор интерфейса: <b>Niklaser</b>.",
+      "SC-FILE:MODDED — это модифицированная утилита sc-file для преобразования содержимого (файлов) игры Stalcraft:X в стандартные для пользователя форматы на базе оригинального проекта onejeuu.",
+    about_warning: "ОТВЕТСТВЕННОСТЬ ЗА ВАШИ ДЕЙСТВИЯ АВТОР ПРОГРАММЫ НЕ НЕСЁТ!",
+    about_more_1:
+      "Проект ориентирован на локальную работу: всё обрабатывается на твоём ПК, без отправки файлов в интернет. Это ускоряет конвертацию и даёт контроль над результатом.",
+    about_more_2:
+      "Основная идея — собрать конвертер и Map Merge в одном окне, чтобы не прыгать между разными утилитами. Интерфейс даёт быстрый доступ к логам, понятные настройки и аккуратную визуальную часть.",
+    about_focus_title: "Фокус проекта",
+    about_focus_text:
+      "Локальная конвертация ассетов STALCRAFT:X с пакетной обработкой, ZIP/папкой вывода и контролем параметров.",
+    about_workflow_title: "Как работать",
+    about_workflow_text:
+      "1) Выбери файлы → 2) Выбери формат → 3) Укажи ZIP/папку → 4) Запусти → 5) Открой результат.",
+    about_more_list:
+      "• Поддержка популярных форматов ассетов STALCRAFT:X<br />• Пакетная обработка, выбор ZIP или папки<br />• Настраиваемые темы, фон, язык, шрифты<br />• Подробные логи для диагностики",
+    about_badge_web: "Web UI",
+    about_badge_logs: "Логи",
+    about_badge_batch: "Batch",
+    about_badge_custom: "Кастом",
+    about_repo_btn: "GitHub",
+    about_docs_btn: "Руководство",
+    about_feat_1_title: "Пакетные конвертации",
+    about_feat_1_text: "ZIP или выбранная папка, с логами и настройками.",
+    about_feat_2_title: "Map Merge",
+    about_feat_2_text: "Склейка регионов карты в изображения.",
+    about_feat_3_title: "Кастомизация",
+    about_feat_3_text: "Темы, фон, язык и параметры вывода.",
+    about_author: "Авторы программы: <b>Niklaser</b> | <b>onejeuu</b>.",
+    about_scfile_link: "Оригинальный SC-FILE",
+    about_scmapmerge_link: "Оригинальный SC-MAPMERGE",
     about_theme: "Основная тема: <span class=\"mono\">жёлтый / чёрный / белый</span>. Настраивается в разделе «Настройки».",
 
     ph_folder_path: "Например: D:\\\\output\\\\scfile",
     ph_mm_name: "Map %Y.%m.%d",
 
     home_sub: "Конвертация ассетов STALCRAFT в стандартные форматы с логами, пакетной обработкой и кастомизацией.",
+    home_greet_named: "Привет, {name}! Добро пожаловать в SC-FILE:MODDED.",
+    home_greet_guest: "Привет! Укажи ник в «Настройки → Общее».",
     home_open_convert: "Открыть конвертер",
     home_menu_title: "Главное меню",
+    home_menu_sub: "Быстрый доступ к основным разделам и действиям.",
+    home_badge_fast: "Fast",
+    home_badge_safe: "Local",
+    home_badge_ui: "Web UI",
+    home_chip_main: "Главное",
     home_menu_convert_desc: "Пакетная конвертация ассетов в ZIP или папку.",
     home_menu_mapmerge_desc: "Склейка регионов карты в изображения (PNG/JPG/WebP).",
     home_menu_settings_desc: "Темы, фон, язык, папки вывода и поведение ZIP.",
@@ -88,17 +134,49 @@ const I18N = {
     home_whatsnew_title: "Что нового",
     home_whatsnew_body:
       "• Web UI + окно (pywebview)<br />• Логи + настройки<br />• Пакетная конвертация в ZIP или папку<br />• Поддержка тем и фона",
+    home_easter_1: "Fuck you Spectrum SC",
+    home_easter_2: "Fuck you Artemiy Lapa",
+    home_easter_3: "Fuck you ИскательМЧ",
+    home_tracking_notice:
+      "Используя программу, вы соглашаетесь, что действия в приложении фиксируются в <b>локальных логах</b>.",
 
     set_tab_general: "Общее",
     set_tab_appearance: "Внешний вид",
     set_tab_conversion: "Конвертация",
     set_tab_logging: "Логи",
+    set_visual_title: "Визуальные эффекты",
+    set_glow: "Подсветка",
+    set_font: "Шрифт",
+    set_font_hint: "Если шрифт не установлен — будет использован ближайший доступный.",
+    font_europe: "Europe-Book-Edited",
+    font_arial: "Arial",
+    font_jetbrains: "JetBrains Mono",
+    welcome_title: "Добро пожаловать",
+    welcome_body:
+      "Это локальная утилита для конвертации ассетов Stalcraft:X. Всё работает на твоём ПК. Используй «Конвертер» и «Map Merge», а при проблемах загляни в «Логи».",
+    welcome_ok: "Понятно",
 
     set_general_title: "Общее",
     set_language: "Язык",
+    set_nickname: "Никнейм",
+    ph_nickname: "Например: Niklaser",
     set_motion: "Анимации",
     set_reduce_motion: "Уменьшить",
     set_saved_hint: "Настройки сохраняются в профиле пользователя.",
+    set_authors: "Авторы: <b>Niklaser</b> | <b>onejeuu</b>.",
+    set_fast_title: "Fast Module",
+    set_fast_desc: "Быстрый режим для моментальной конвертации: открыл файлы → сразу обработал.",
+    set_fast_console: "Консольный режим",
+    set_fast_console_hint: "Без Web UI, быстрее, только конвертация.",
+    set_fast_console_desc: "Запускает FAST модуль без Web UI. Подходит для максимальной скорости.",
+    set_anime_prikoly: "Anime style",
+    set_anime_prikoly_hint: "На главной используется anime.svg. По умолчанию — man_and_vertolotiki.svg.",
+    set_anime_prikoly_desc: "Меняет декор главной: включено — anime.svg, выключено — man_and_vertolotiki.svg.",
+    set_map_blur_title: "Размытие карты (обзор)",
+    set_map_blur_desc: "В окне осмотра карты при общем обзоре снижается детализация для повышения производительности.",
+    set_tracking_ack_title: "Логи действий",
+    set_tracking_ack: "Подтверждаю локальное логирование действий в приложении",
+    set_tracking_ack_desc: "Это локальное логирование внутри приложения (для диагностики и истории задач).",
 
     set_info_title: "Информация",
     set_version: "Версия",
@@ -154,9 +232,10 @@ const I18N = {
       "• ZIP по умолчанию сохраняется в «Загрузки».<br />• Если файл не появился — открой «Логи приложения».<br />• Для репорта ошибок приложи лог-файл.",
 
     set_actions_title: "Действия",
+    btn_apply: "Применить",
     btn_save: "Сохранить",
-    btn_reset_all: "Сброс",
-    settings_footer_hint: "Сохранение применяет изменения сразу.",
+    btn_reset_all: "Настройки по умолчанию",
+    settings_footer_hint: "Кнопки «Применить» и «Сохранить» применяют изменения сразу.",
     btn_delete: "Удалить",
     btn_download: "Скачать",
 
@@ -174,6 +253,7 @@ const I18N = {
     loading_info: "Загрузка информации…",
 
     toast_settings_saved: "Настройки сохранены",
+    toast_settings_applied: "Изменения применены",
     toast_settings_failed: "Не удалось сохранить настройки",
     toast_bg_uploaded: "Фон обновлён",
     toast_bg_removed: "Фон удалён",
@@ -181,6 +261,11 @@ const I18N = {
     toast_bg_remove_failed: "Не удалось удалить фон",
     toast_folder_picker_unavailable: "Выбор папки доступен только в desktop-окне. Вставь путь вручную.",
     toast_folder_pick_failed: "Не удалось открыть выбор папки",
+    toast_map_view_blocked: "Не удалось открыть окно осмотра карты. Разреши всплывающие окна.",
+    toast_model_view_blocked: "Не удалось открыть окно осмотра модели.",
+    toast_texture_view_blocked: "Не удалось открыть окно осмотра текстуры.",
+    dropzone_title: "Перетащите файлы сюда",
+    dropzone_click: "или нажмите, чтобы выбрать",
   },
   en: {
     nav_home: "Home",
@@ -189,6 +274,7 @@ const I18N = {
     nav_settings: "Settings",
     nav_logs: "Logs",
     nav_about: "About",
+    brand_subtitle: "<b>Niklaser</b> | <b>onejeuu</b>",
 
     convert_files_title: "Files",
     convert_options_title: "Options",
@@ -207,6 +293,12 @@ const I18N = {
     btn_open_folder: "Open folder",
     btn_hide_progress: "Hide progress",
     results_title: "Results",
+    fast_title: "Fast Module",
+    fast_desc: "Opened files are ready for conversion.",
+    fast_full: "Full mode",
+    fast_start: "Convert",
+    fast_hide: "Hide",
+    fast_empty: "No files for fast mode.",
 
     mm_files_title: "Map files",
     mm_support_hint:
@@ -222,22 +314,60 @@ const I18N = {
     mm_overwrite: "Overwrite",
     mm_debug: "Debug",
     mm_merge: "Merge map",
+    mm_inspect: "Inspect map",
+    mdl_inspect: "Inspect model",
+    tex_inspect: "Inspect texture",
 
     app_logs_title: "App logs",
     btn_refresh: "Refresh",
 
     about_title: "About",
+    about_sub: "Niklaser | onejeuu",
     about_body:
-      "Local web interface for SC-FILE:MODDED: convert STALCRAFT assets into standard formats with logs, settings and batch processing.",
-    about_author: "UI author: <b>Niklaser</b>.",
+      "SC-FILE:MODDED is a modified sc-file utility that converts Stalcraft:X game assets into standard user-friendly formats, based on onejeuu's original project.",
+    about_warning: "THE AUTHOR IS NOT RESPONSIBLE FOR YOUR ACTIONS!",
+    about_more_1:
+      "This project is built for local use: everything is processed on your PC, with no file uploads. That speeds up conversion and keeps you in control.",
+    about_more_2:
+      "The goal is to bundle Converter and Map Merge in one window so you don't have to jump between tools. The UI keeps logs close, settings clear, and visuals clean.",
+    about_focus_title: "Project focus",
+    about_focus_text:
+      "Local STALCRAFT:X asset conversion with batch processing, ZIP/folder output, and precise option control.",
+    about_workflow_title: "Workflow",
+    about_workflow_text:
+      "1) Pick files → 2) Choose format → 3) ZIP or folder → 4) Run → 5) Open results.",
+    about_more_list:
+      "• Popular STALCRAFT:X asset formats support<br />• Batch processing, ZIP or folder output<br />• Themes, background, language, fonts<br />• Detailed logs for troubleshooting",
+    about_badge_web: "Web UI",
+    about_badge_logs: "Logs",
+    about_badge_batch: "Batch",
+    about_badge_custom: "Custom",
+    about_repo_btn: "GitHub",
+    about_docs_btn: "Docs",
+    about_feat_1_title: "Batch conversions",
+    about_feat_1_text: "ZIP or a chosen folder, with logs and settings.",
+    about_feat_2_title: "Map Merge",
+    about_feat_2_text: "Stitches map regions into images.",
+    about_feat_3_title: "Customization",
+    about_feat_3_text: "Themes, background, language, and output options.",
+    about_author: "Program authors: <b>Niklaser</b> | <b>onejeuu</b>.",
+    about_scfile_link: "Original SC-FILE",
+    about_scmapmerge_link: "Original SC-MAPMERGE",
     about_theme: "Main theme: <span class=\"mono\">yellow / black / white</span>. Configure it in Settings.",
 
     ph_folder_path: "e.g. D:\\\\output\\\\scfile",
     ph_mm_name: "Map %Y.%m.%d",
 
     home_sub: "Convert STALCRAFT assets into standard formats with logs, batch processing and customization.",
+    home_greet_named: "Hi, {name}! Welcome to SC-FILE:MODDED.",
+    home_greet_guest: "Hi! Set your nickname in Settings → General.",
     home_open_convert: "Open converter",
     home_menu_title: "Main menu",
+    home_menu_sub: "Quick access to the main sections and actions.",
+    home_badge_fast: "Fast",
+    home_badge_safe: "Local",
+    home_badge_ui: "Web UI",
+    home_chip_main: "Primary",
     home_menu_convert_desc: "Batch conversion of assets to ZIP or a folder.",
     home_menu_mapmerge_desc: "Merge map regions into images (PNG/JPG/WebP).",
     home_menu_settings_desc: "Themes, background, language, output folders and ZIP behavior.",
@@ -256,17 +386,49 @@ const I18N = {
     home_whatsnew_title: "What’s new",
     home_whatsnew_body:
       "• Web UI + desktop window (pywebview)<br />• Logs + settings<br />• Batch conversion to ZIP or folder<br />• Themes + background support",
+    home_easter_1: "Fuck you Spectrum SC",
+    home_easter_2: "Fuck you Artemiy Lapa",
+    home_easter_3: "Fuck you ИскательМЧ",
+    home_tracking_notice:
+      "By using this app, you agree that in-app actions are recorded in <b>local logs</b>.",
 
     set_tab_general: "General",
     set_tab_appearance: "Appearance",
     set_tab_conversion: "Conversion",
     set_tab_logging: "Logs",
+    set_visual_title: "Visual effects",
+    set_glow: "Glow",
+    set_font: "Font",
+    set_font_hint: "If the font is not installed, the closest available one will be used.",
+    font_europe: "Europe-Book-Edited",
+    font_arial: "Arial",
+    font_jetbrains: "JetBrains Mono",
+    welcome_title: "Welcome",
+    welcome_body:
+      "This is a local utility to convert Stalcraft:X assets. Everything runs on your PC. Use “Converter” and “Map Merge”, and check “Logs” if something goes wrong.",
+    welcome_ok: "Got it",
 
     set_general_title: "General",
     set_language: "Language",
+    set_nickname: "Nickname",
+    ph_nickname: "For example: Niklaser",
     set_motion: "Animations",
     set_reduce_motion: "Reduce",
     set_saved_hint: "Settings are stored per-user.",
+    set_authors: "Authors: <b>Niklaser</b> | <b>onejeuu</b>.",
+    set_fast_title: "Fast Module",
+    set_fast_desc: "Fast mode for instant conversion: open files and process immediately.",
+    set_fast_console: "Console mode",
+    set_fast_console_hint: "No Web UI, faster, conversion only.",
+    set_fast_console_desc: "Runs FAST mode without Web UI. Best for maximum speed.",
+    set_anime_prikoly: "Anime style",
+    set_anime_prikoly_hint: "Home uses anime.svg. Default is man_and_vertolotiki.svg.",
+    set_anime_prikoly_desc: "Switches home decor: enabled uses anime.svg, disabled uses man_and_vertolotiki.svg.",
+    set_map_blur_title: "Map blur (overview)",
+    set_map_blur_desc: "In map inspector, zoomed-out view uses lower detail for better performance.",
+    set_tracking_ack_title: "Activity logs",
+    set_tracking_ack: "I agree to local logging of app actions",
+    set_tracking_ack_desc: "This is local app logging for diagnostics and task history.",
 
     set_info_title: "Info",
     set_version: "Version",
@@ -322,9 +484,10 @@ const I18N = {
       "• ZIP is saved to Downloads by default.<br />• If the file doesn’t appear — open App logs.<br />• For bug reports attach the log file.",
 
     set_actions_title: "Actions",
+    btn_apply: "Apply",
     btn_save: "Save",
-    btn_reset_all: "Reset",
-    settings_footer_hint: "Saving applies changes immediately.",
+    btn_reset_all: "Default settings",
+    settings_footer_hint: "Both Apply and Save apply changes immediately.",
     btn_delete: "Delete",
     btn_download: "Download",
 
@@ -342,6 +505,7 @@ const I18N = {
     loading_info: "Loading info…",
 
     toast_settings_saved: "Settings saved",
+    toast_settings_applied: "Changes applied",
     toast_settings_failed: "Failed to save settings",
     toast_bg_uploaded: "Background updated",
     toast_bg_removed: "Background removed",
@@ -349,6 +513,11 @@ const I18N = {
     toast_bg_remove_failed: "Failed to remove background",
     toast_folder_picker_unavailable: "Folder picker is available only in the desktop window. Paste the path manually.",
     toast_folder_pick_failed: "Failed to open folder picker",
+    toast_map_view_blocked: "Failed to open map inspector window. Allow pop-ups for this app.",
+    toast_model_view_blocked: "Failed to open model inspector window.",
+    toast_texture_view_blocked: "Failed to open texture inspector window.",
+    dropzone_title: "Drag files here",
+    dropzone_click: "or click to select",
   },
 };
 
@@ -387,6 +556,21 @@ function applyI18n(lang) {
     if (!key) return;
     el.placeholder = t(key);
   });
+  renderHomeGreeting();
+}
+
+function normalizeNickname(value) {
+  return String(value || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 32);
+}
+
+function renderHomeGreeting() {
+  const el = $("#homeGreeting");
+  if (!el) return;
+  const nickname = normalizeNickname(state.cfg?.profile_nickname || "");
+  el.textContent = nickname ? t("home_greet_named").replace("{name}", nickname) : t("home_greet_guest");
 }
 
 function syncTopLangToggle(lang) {
@@ -485,6 +669,140 @@ function setButtonLabel(id, label) {
 
 function encodeRelPath(rel) {
   return rel.split("/").map(encodeURIComponent).join("/");
+}
+
+async function openMapViewer(taskId, relPath) {
+  const query = new URLSearchParams({
+    task: String(taskId || ""),
+    rel: String(relPath || ""),
+    lang: currentLang(),
+  });
+  const url = `/static/map_view.html?${query.toString()}`;
+  try {
+    const api = window.pywebview?.api;
+    if (api && typeof api.open_map_view === "function") {
+      const opened = await api.open_map_view(String(taskId || ""), String(relPath || ""), currentLang());
+      if (opened) return true;
+      notify("warn", t("toast_map_view_blocked"));
+      return false;
+    }
+  } catch (_) {}
+
+  if (window.pywebview?.api) {
+    notify("warn", t("toast_map_view_blocked"));
+    return false;
+  }
+  const win = window.open(url, `scfile_map_${taskId}`, "popup=yes,width=1360,height=900,resizable=yes,scrollbars=yes");
+  if (!win) {
+    notify("warn", t("toast_map_view_blocked"));
+    return false;
+  }
+  return true;
+}
+
+function bindMapInspectButton(inspectButton, taskId, relPath) {
+  inspectButton.onclick = () => {
+    openMapViewer(taskId, relPath).catch(() => {
+      notify("warn", t("toast_map_view_blocked"));
+    });
+  };
+}
+
+function isModelFile(path) {
+  const v = String(path || "").toLowerCase();
+  return v.endsWith(".glb") || v.endsWith(".gltf") || v.endsWith(".obj") || v.endsWith(".dae") || v.endsWith(".ms3d");
+}
+
+function isTextureFile(path) {
+  const v = String(path || "").toLowerCase();
+  return (
+    v.endsWith(".dds") ||
+    v.endsWith(".png") ||
+    v.endsWith(".jpg") ||
+    v.endsWith(".jpeg") ||
+    v.endsWith(".webp") ||
+    v.endsWith(".bmp") ||
+    v.endsWith(".gif") ||
+    v.endsWith(".svg")
+  );
+}
+
+async function openModelViewer(taskId, relPath) {
+  const query = new URLSearchParams({
+    task: String(taskId || ""),
+    rel: String(relPath || ""),
+    lang: currentLang(),
+  });
+  const url = `/static/model_view.html?${query.toString()}`;
+
+  try {
+    const api = window.pywebview?.api;
+    if (api && typeof api.open_model_view === "function") {
+      const opened = await api.open_model_view(String(taskId || ""), String(relPath || ""), currentLang());
+      if (opened) return true;
+      notify("warn", t("toast_model_view_blocked"));
+      return false;
+    }
+  } catch (_) {}
+
+  if (window.pywebview?.api) {
+    notify("warn", t("toast_model_view_blocked"));
+    return false;
+  }
+
+  const win = window.open(url, `scfile_model_${taskId}`, "popup=yes,width=1360,height=900,resizable=yes,scrollbars=yes");
+  if (!win) {
+    notify("warn", t("toast_model_view_blocked"));
+    return false;
+  }
+  return true;
+}
+
+function bindModelInspectButton(inspectButton, taskId, relPath) {
+  inspectButton.onclick = () => {
+    openModelViewer(taskId, relPath).catch(() => {
+      notify("warn", t("toast_model_view_blocked"));
+    });
+  };
+}
+
+async function openTextureViewer(taskId, relPath) {
+  const query = new URLSearchParams({
+    task: String(taskId || ""),
+    rel: String(relPath || ""),
+    lang: currentLang(),
+  });
+  const url = `/static/texture_view.html?${query.toString()}`;
+
+  try {
+    const api = window.pywebview?.api;
+    if (api && typeof api.open_texture_view === "function") {
+      const opened = await api.open_texture_view(String(taskId || ""), String(relPath || ""), currentLang());
+      if (opened) return true;
+      notify("warn", t("toast_texture_view_blocked"));
+      return false;
+    }
+  } catch (_) {}
+
+  if (window.pywebview?.api) {
+    notify("warn", t("toast_texture_view_blocked"));
+    return false;
+  }
+
+  const win = window.open(url, `scfile_texture_${taskId}`, "popup=yes,width=1360,height=900,resizable=yes,scrollbars=yes");
+  if (!win) {
+    notify("warn", t("toast_texture_view_blocked"));
+    return false;
+  }
+  return true;
+}
+
+function bindTextureInspectButton(inspectButton, taskId, relPath) {
+  inspectButton.onclick = () => {
+    openTextureViewer(taskId, relPath).catch(() => {
+      notify("warn", t("toast_texture_view_blocked"));
+    });
+  };
 }
 
 async function apiGet(url) {
@@ -664,14 +982,62 @@ function applyTheme(theme) {
 function applyBackground(cfg) {
   const root = document.documentElement;
   const enabled = !!cfg?.background_enabled;
-  const url = cfg?.background_url || (cfg?.background_image ? `/user/${encodeURIComponent(cfg.background_image)}` : "");
+  const builtin = cfg?.background_builtin ? `/static/backrounds/${encodeURIComponent(cfg.background_builtin)}` : "";
+  const url = cfg?.background_url || (cfg?.background_image ? `/user/${encodeURIComponent(cfg.background_image)}` : builtin);
   root.style.setProperty("--bg-image", enabled && url ? `url("${url}")` : "none");
   root.style.setProperty("--bg-image-opacity", String(cfg?.background_opacity ?? 0.22));
   root.style.setProperty("--bg-image-blur", `${cfg?.background_blur ?? 0}px`);
+  root.classList.toggle("has-custom-bg", !!(enabled && url));
+}
+
+function applyAnimeArt(cfg) {
+  const root = document.documentElement;
+  const useAnime = !!cfg?.anime_prikoly_enabled;
+  const art = useAnime ? 'url("/static/anime.svg")' : 'url("/static/man_and_vertolotiki.svg")';
+  root.style.setProperty("--anime-art", art);
 }
 
 function applyMotion(cfg) {
   document.documentElement.classList.toggle("reduce-motion", !!cfg?.reduce_motion);
+}
+
+function applyGlow(cfg) {
+  document.documentElement.classList.toggle("no-glow", cfg?.highlight_enabled === false);
+}
+
+function applyFont(cfg) {
+  const root = document.documentElement;
+  const name = String(cfg?.font_name || "europe").toLowerCase();
+  if (name === "arial") {
+    root.style.setProperty(
+      "--font",
+      '"Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans", "Liberation Sans", sans-serif'
+    );
+    root.style.setProperty(
+      "--mono",
+      '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    );
+    return;
+  }
+  if (name === "jetbrains") {
+    root.style.setProperty(
+      "--font",
+      '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    );
+    root.style.setProperty(
+      "--mono",
+      '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    );
+    return;
+  }
+  root.style.setProperty(
+    "--font",
+    '"Europe-Book-Edited", "Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans", "Liberation Sans", sans-serif'
+  );
+  root.style.setProperty(
+    "--mono",
+    '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+  );
 }
 
 const THEME_PRESETS = {
@@ -685,13 +1051,13 @@ const THEME_PRESETS = {
     danger: "#FF4D4D",
   },
   red: {
-    accent: "#FF3B3B",
-    bg: "#070606",
-    panel: "#120808",
-    panel2: "#0D0606",
-    text: "#FFF5F5",
-    muted_text: "#D6B8B8",
-    danger: "#FF4D4D",
+    accent: "#FF4A57",
+    bg: "#0B090B",
+    panel: "#171015",
+    panel2: "#140D12",
+    text: "#FFF6F8",
+    muted_text: "#E0C2C8",
+    danger: "#FF2D42",
   },
   neo_blue: {
     accent: "#30D1FF",
@@ -719,6 +1085,42 @@ const THEME_PRESETS = {
     text: "#EFFFF8",
     muted_text: "#9BD9BD",
     danger: "#FF5B5B",
+  },
+  pink: {
+    accent: "#FF4DB8",
+    bg: "#12070C",
+    panel: "#1A0B12",
+    panel2: "#14080E",
+    text: "#FFF2F8",
+    muted_text: "#E0B7C9",
+    danger: "#FF5B7A",
+  },
+  orange: {
+    accent: "#FF8A00",
+    bg: "#120B06",
+    panel: "#1A120A",
+    panel2: "#140E08",
+    text: "#FFF7EE",
+    muted_text: "#E1C3A8",
+    danger: "#FF5B3D",
+  },
+  likvidation: {
+    accent: "#FF2A3D",
+    bg: "#050505",
+    panel: "#111111",
+    panel2: "#0B0B0B",
+    text: "#FFF4F5",
+    muted_text: "#C9B1B4",
+    danger: "#FF142C",
+  },
+  one_piece: {
+    accent: "#49B8FF",
+    bg: "#2D3844",
+    panel: "#3A4755",
+    panel2: "#313D4A",
+    text: "#F3FAFF",
+    muted_text: "#C0CEDA",
+    danger: "#FF6969",
   },
 };
 
@@ -760,13 +1162,23 @@ function currentConvertOptions() {
   };
 }
 
+function emptyDropzoneHtml() {
+  return `
+    <div class="dropzone-empty">
+      <div class="dropzone-empty-icon"><svg class="icon"><use href="/static/icons.svg#folder-plus"></use></svg></div>
+      <div class="dropzone-empty-title">${t("dropzone_title")}</div>
+      <div class="dropzone-empty-text">${t("dropzone_click")}</div>
+    </div>
+  `;
+}
+
 function renderFileList() {
   const list = $("#fileList");
   if (!list) return;
 
   const entries = Array.from(state.filesByKey.entries());
   if (entries.length === 0) {
-    list.innerHTML = `<div class="hint">${t("no_files")}</div>`;
+    list.innerHTML = emptyDropzoneHtml();
     return;
   }
 
@@ -817,7 +1229,7 @@ function renderMapmergeFileList() {
 
   const entries = Array.from(state.mmFilesByKey.entries());
   if (entries.length === 0) {
-    list.innerHTML = `<div class="hint">${t("no_files")}</div>`;
+    list.innerHTML = emptyDropzoneHtml();
     return;
   }
 
@@ -862,7 +1274,7 @@ function addMapmergeFiles(files) {
   renderMapmergeFileList();
 }
 
-function setupDropzone(el, onFiles) {
+function setupDropzone(el, onFiles, onClickSelect) {
   if (!el) return;
 
   el.addEventListener("dragover", (e) => {
@@ -877,6 +1289,10 @@ function setupDropzone(el, onFiles) {
     e.preventDefault();
     el.classList.remove("dragover");
     if (e.dataTransfer?.files?.length) onFiles(e.dataTransfer.files);
+  });
+
+  el.addEventListener("click", () => {
+    if (typeof onClickSelect === "function") onClickSelect();
   });
 }
 
@@ -918,6 +1334,23 @@ function renderOutputs(task) {
     const actions = document.createElement("div");
     actions.className = "out-actions";
 
+    if (isModelFile(rel)) {
+      const inspect = document.createElement("button");
+      inspect.className = "btn";
+      inspect.type = "button";
+      inspect.innerHTML = `<svg class="icon"><use href="/static/icons.svg#image"></use></svg><span>${t("mdl_inspect")}</span>`;
+      bindModelInspectButton(inspect, task.id, rel);
+      actions.appendChild(inspect);
+    }
+    if (isTextureFile(rel)) {
+      const inspectTexture = document.createElement("button");
+      inspectTexture.className = "btn";
+      inspectTexture.type = "button";
+      inspectTexture.innerHTML = `<svg class="icon"><use href="/static/icons.svg#image"></use></svg><span>${t("tex_inspect")}</span>`;
+      bindTextureInspectButton(inspectTexture, task.id, rel);
+      actions.appendChild(inspectTexture);
+    }
+
     const a = document.createElement("a");
     a.className = "btn ghost";
     a.textContent = t("btn_download");
@@ -944,6 +1377,13 @@ function renderMmOutputs(task) {
 
     const actions = document.createElement("div");
     actions.className = "out-actions";
+
+    const inspect = document.createElement("button");
+    inspect.className = "btn";
+    inspect.type = "button";
+    inspect.innerHTML = `<svg class="icon"><use href="/static/icons.svg#image"></use></svg><span>${t("mm_inspect")}</span>`;
+    bindMapInspectButton(inspect, task.id, rel);
+    actions.appendChild(inspect);
 
     const a = document.createElement("a");
     a.className = "btn ghost";
@@ -1052,6 +1492,68 @@ async function pollMapmergeTask(taskId) {
 
   await tick();
   state.mmPollTimer = setInterval(tick, 900);
+}
+
+function renderFastFiles() {
+  const files = Array.from(state.openFiles || []);
+  const renderTo = (list) => {
+    if (!list) return;
+    if (!files.length) {
+      list.innerHTML = `<div class="hint">${t("fast_empty")}</div>`;
+      return;
+    }
+    list.innerHTML = files.map((p) => `<div class="fast-item mono">${p}</div>`).join("");
+  };
+  renderTo($("#fastFileList"));
+  renderTo($("#fastHomeFileList"));
+}
+
+function showFastModule(files) {
+  state.openFiles = Array.isArray(files) ? files : [];
+  const card = $("#fastCard");
+  if (card) card.classList.toggle("hidden", state.openFiles.length === 0);
+  const homeCard = $("#fastHomeCard");
+  if (homeCard) homeCard.classList.toggle("hidden", state.openFiles.length === 0);
+  renderFastFiles();
+}
+
+function hideFastModule() {
+  state.openFiles = [];
+  const card = $("#fastCard");
+  if (card) card.classList.add("hidden");
+  const homeCard = $("#fastHomeCard");
+  if (homeCard) homeCard.classList.add("hidden");
+}
+
+async function startFastConvert() {
+  if (!state.openFiles || state.openFiles.length === 0) {
+    $("#taskStatus").textContent = t("fast_empty");
+    return;
+  }
+
+  const opts = currentConvertOptions();
+  if (opts.output_mode === "folder" && !opts.output_dir) {
+    $("#taskStatus").textContent = t("need_folder_path");
+    return;
+  }
+
+  setButtonLabel("#btnFastStart", `${t("uploading")}…`);
+  $("#btnFastStart").disabled = true;
+  $("#taskStatus").textContent = `${t("uploading")}…`;
+  $("#progressBar").style.width = "0%";
+
+  try {
+    const data = await apiPostJson("/api/convert/path", { options: opts, paths: state.openFiles });
+    state.taskId = data.task_id;
+    $("#taskStatus").textContent = `${t("converting")}…`;
+    $("#progressBar").style.width = "0%";
+    await pollTask(state.taskId);
+  } catch (e) {
+    $("#taskStatus").textContent = `${t("error_prefix")}: ${e.message || e}`;
+  } finally {
+    setButtonLabel("#btnFastStart", t("fast_start"));
+    $("#btnFastStart").disabled = false;
+  }
 }
 
 async function startConvert() {
@@ -1168,12 +1670,20 @@ function fillSettings(cfg) {
   if (!cfg) return;
 
   const themeName = String(cfg.theme_name || "niklaser").trim();
-  const isKnown = ["niklaser", "red", "neo_blue", "violet", "terminal", "custom"].includes(themeName);
-  const preset = isKnown ? themeName : "custom";
+  const normalizedThemeName = themeName === "the_livdidation" ? "likvidation" : themeName;
+  const isKnown = ["niklaser", "red", "neo_blue", "violet", "terminal", "pink", "orange", "likvidation", "one_piece", "custom"].includes(normalizedThemeName);
+  const preset = isKnown ? normalizedThemeName : "custom";
 
   if ($("#setLanguage")) $("#setLanguage").value = cfg.language || "ru";
   syncTopLangToggle(cfg.language || "ru");
+  if ($("#setNickname")) $("#setNickname").value = normalizeNickname(cfg.profile_nickname || "");
   if ($("#setReduceMotion")) $("#setReduceMotion").checked = !!cfg.reduce_motion;
+  if ($("#setGlowEnabled")) $("#setGlowEnabled").checked = cfg.highlight_enabled ?? true;
+  if ($("#setFont")) $("#setFont").value = cfg.font_name || "europe";
+  if ($("#setFastConsole")) $("#setFastConsole").checked = cfg.fast_console_enabled ?? false;
+  if ($("#setAnimePrikoly")) $("#setAnimePrikoly").checked = cfg.anime_prikoly_enabled ?? false;
+  if ($("#setMapViewBlurEnabled")) $("#setMapViewBlurEnabled").checked = cfg.map_view_blur_enabled ?? true;
+  if ($("#setTrackingAck")) $("#setTrackingAck").checked = cfg.activity_tracking_ack ?? false;
 
   if ($("#setThemePreset")) $("#setThemePreset").value = preset;
 
@@ -1193,7 +1703,7 @@ function fillSettings(cfg) {
   if ($("#setBgEnabled")) $("#setBgEnabled").checked = !!cfg.background_enabled;
   if ($("#setBgOpacity")) $("#setBgOpacity").value = String(cfg.background_opacity ?? 0.22);
   if ($("#setBgBlur")) $("#setBgBlur").value = String(cfg.background_blur ?? 0);
-  if ($("#setBgCurrent")) $("#setBgCurrent").textContent = cfg.background_image || "—";
+  if ($("#setBgCurrent")) $("#setBgCurrent").textContent = cfg.background_image || cfg.background_builtin || "—";
 
   if ($("#setDefaultOutputMode")) $("#setDefaultOutputMode").value = cfg.default_output_mode || "zip";
   if ($("#setDefaultOutputDir")) $("#setDefaultOutputDir").value = cfg.default_output_dir || "";
@@ -1222,6 +1732,7 @@ function fillSettings(cfg) {
 
   const outputMode = $$('input[name="outputMode"]').find((x) => x.checked)?.value || "zip";
   if ($("#rowOutputDir")) $("#rowOutputDir").style.display = outputMode === "folder" ? "" : "none";
+  renderHomeGreeting();
 }
 
 function setActiveSettingsTab(tab) {
@@ -1276,12 +1787,20 @@ function setThemeInputsEnabled(enabled) {
 function collectSettingsPayload() {
   return {
     language: $("#setLanguage")?.value || "ru",
+    profile_nickname: normalizeNickname($("#setNickname")?.value || ""),
     reduce_motion: $("#setReduceMotion")?.checked ?? false,
+    highlight_enabled: $("#setGlowEnabled")?.checked ?? true,
+    font_name: $("#setFont")?.value || "europe",
+    fast_console_enabled: $("#setFastConsole")?.checked ?? false,
+    anime_prikoly_enabled: $("#setAnimePrikoly")?.checked ?? false,
+    map_view_blur_enabled: $("#setMapViewBlurEnabled")?.checked ?? true,
+    activity_tracking_ack: $("#setTrackingAck")?.checked ?? false,
 
     theme_name: $("#setThemePreset")?.value || "niklaser",
     theme: themeFromInputs(),
 
     background_enabled: $("#setBgEnabled")?.checked ?? false,
+    background_builtin: state.cfg?.background_builtin || "",
     background_opacity: parseFloat($("#setBgOpacity")?.value || "0.22"),
     background_blur: parseInt($("#setBgBlur")?.value || "0", 10),
 
@@ -1309,7 +1828,10 @@ async function saveSettings() {
 
   applyTheme(state.cfg.theme);
   applyBackground(state.cfg);
+  applyAnimeArt(state.cfg);
   applyMotion(state.cfg);
+  applyGlow(state.cfg);
+  applyFont(state.cfg);
   applyI18n(state.cfg.language || "ru");
 
   fillSettings(state.cfg);
@@ -1319,6 +1841,66 @@ async function saveSettings() {
   goView(activeView);
 
   return state.cfg;
+}
+
+async function onSaveSettingsClick(successKey) {
+  try {
+    await saveSettings();
+    notify("success", t(successKey));
+  } catch (err) {
+    notify("error", `${t("toast_settings_failed")}: ${err?.message || err}`);
+  }
+}
+
+function resetSettingsPreview() {
+  if ($("#setLanguage")) $("#setLanguage").value = "ru";
+  if ($("#setReduceMotion")) $("#setReduceMotion").checked = false;
+  if ($("#setNickname")) $("#setNickname").value = "";
+
+  if ($("#setThemePreset")) $("#setThemePreset").value = "niklaser";
+  setThemeInputsEnabled(false);
+  applyPresetToThemeInputs("niklaser");
+
+  if ($("#setGlowEnabled")) $("#setGlowEnabled").checked = true;
+  if ($("#setFont")) $("#setFont").value = "europe";
+  if ($("#setFastConsole")) $("#setFastConsole").checked = false;
+  if ($("#setAnimePrikoly")) $("#setAnimePrikoly").checked = false;
+  if ($("#setMapViewBlurEnabled")) $("#setMapViewBlurEnabled").checked = true;
+  if ($("#setTrackingAck")) $("#setTrackingAck").checked = false;
+
+  if ($("#setBgEnabled")) $("#setBgEnabled").checked = false;
+  if ($("#setBgOpacity")) $("#setBgOpacity").value = "0.22";
+  if ($("#setBgBlur")) $("#setBgBlur").value = "0";
+  if ($("#setBgCurrent")) $("#setBgCurrent").textContent = "—";
+  state.cfg = state.cfg || {};
+  state.cfg.background_builtin = "";
+  state.cfg.background_image = "";
+
+  if ($("#setDefaultOutputMode")) $("#setDefaultOutputMode").value = "zip";
+  if ($("#setDefaultOutputDir")) $("#setDefaultOutputDir").value = "";
+  if ($("#setDefaultZipDir")) $("#setDefaultZipDir").value = state.info?.downloads_dir || "";
+
+  if ($("#setPreserve")) $("#setPreserve").checked = true;
+  if ($("#setUnique")) $("#setUnique").checked = true;
+  if ($("#setSkeleton")) $("#setSkeleton").checked = true;
+  if ($("#setAnimation")) $("#setAnimation").checked = false;
+
+  if ($("#setAutoDownloadZip")) $("#setAutoDownloadZip").checked = true;
+  if ($("#setLogLevel")) $("#setLogLevel").value = "INFO";
+
+  applyI18n($("#setLanguage")?.value || "ru");
+  applyMotion({ reduce_motion: $("#setReduceMotion")?.checked ?? false });
+  applyGlow({ highlight_enabled: $("#setGlowEnabled")?.checked ?? true });
+  applyFont({ font_name: $("#setFont")?.value || "europe" });
+  applyAnimeArt({ anime_prikoly_enabled: $("#setAnimePrikoly")?.checked ?? false });
+  state.cfg.profile_nickname = normalizeNickname($("#setNickname")?.value || "");
+  renderHomeGreeting();
+  applyBackground({
+    ...(state.cfg || {}),
+    background_enabled: $("#setBgEnabled")?.checked ?? false,
+    background_opacity: parseFloat($("#setBgOpacity")?.value || "0.22"),
+    background_blur: parseInt($("#setBgBlur")?.value || "0", 10),
+  });
 }
 
 async function uploadBackground(file) {
@@ -1331,6 +1913,7 @@ async function uploadBackground(file) {
 
   state.cfg = state.cfg || {};
   state.cfg.background_image = data.filename;
+  state.cfg.background_builtin = "";
   state.cfg.background_enabled = true;
   state.cfg.background_url = data.url;
 
@@ -1346,6 +1929,7 @@ async function deleteBackground() {
 
   state.cfg = state.cfg || {};
   state.cfg.background_image = "";
+  state.cfg.background_builtin = "";
   state.cfg.background_enabled = false;
   state.cfg.background_url = "";
 
@@ -1376,10 +1960,14 @@ async function main() {
     state.cfg = await apiGet("/api/settings");
     applyTheme(state.cfg.theme);
     applyBackground(state.cfg);
+    applyAnimeArt(state.cfg);
     applyMotion(state.cfg);
+    applyGlow(state.cfg);
+    applyFont(state.cfg);
     applyI18n(state.cfg.language || "ru");
     fillSettings(state.cfg);
     $("#appInfo").textContent = t("ready");
+    maybeShowWelcome();
   } catch (e) {
     $("#appInfo").textContent = "config error";
   }
@@ -1394,7 +1982,12 @@ async function main() {
     if ($("#infoLogFile")) $("#infoLogFile").textContent = state.info.log_path || "—";
     if ($("#infoDownloadsDir")) $("#infoDownloadsDir").textContent = state.info.downloads_dir || "—";
 
-    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser`;
+    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser | onejeuu`;
+    if (Array.isArray(state.info?.open_files) && state.info.open_files.length) {
+      showFastModule(state.info.open_files);
+    } else {
+      hideFastModule();
+    }
 
     if ($("#setDefaultZipDir") && !$("#setDefaultZipDir").value) {
       $("#setDefaultZipDir").value = state.info.downloads_dir || "";
@@ -1403,9 +1996,9 @@ async function main() {
     // non-fatal
   }
 
-  $("#btnAddFiles").onclick = () => $("#inputFiles").click();
-  $("#btnAddFolder").onclick = () => $("#inputFolder").click();
-  $("#btnClearFiles").onclick = () => {
+  if ($("#btnAddFiles")) $("#btnAddFiles").onclick = () => $("#inputFiles").click();
+  if ($("#btnAddFolder")) $("#btnAddFolder").onclick = () => $("#inputFolder").click();
+  if ($("#btnClearFiles")) $("#btnClearFiles").onclick = () => {
     state.filesByKey.clear();
     renderFileList();
   };
@@ -1413,9 +2006,9 @@ async function main() {
   $("#inputFiles").addEventListener("change", (e) => addSelectedFiles(e.target.files));
   $("#inputFolder").addEventListener("change", (e) => addSelectedFiles(e.target.files));
 
-  $("#mmBtnAddFiles").onclick = () => $("#mmInputFiles").click();
-  $("#mmBtnAddFolder").onclick = () => $("#mmInputFolder").click();
-  $("#mmBtnClearFiles").onclick = () => {
+  if ($("#mmBtnAddFiles")) $("#mmBtnAddFiles").onclick = () => $("#mmInputFiles").click();
+  if ($("#mmBtnAddFolder")) $("#mmBtnAddFolder").onclick = () => $("#mmInputFolder").click();
+  if ($("#mmBtnClearFiles")) $("#mmBtnClearFiles").onclick = () => {
     state.mmFilesByKey.clear();
     renderMapmergeFileList();
   };
@@ -1423,8 +2016,8 @@ async function main() {
   $("#mmInputFiles").addEventListener("change", (e) => addMapmergeFiles(e.target.files));
   $("#mmInputFolder").addEventListener("change", (e) => addMapmergeFiles(e.target.files));
 
-  setupDropzone($("#fileList"), addSelectedFiles);
-  setupDropzone($("#mmFileList"), addMapmergeFiles);
+  setupDropzone($("#fileList"), addSelectedFiles, () => $("#inputFiles").click());
+  setupDropzone($("#mmFileList"), addMapmergeFiles, () => $("#mmInputFiles").click());
 
   $("#homeGoConvert").onclick = () => goView("convert");
   $("#homeGoMapmerge").onclick = () => goView("mapmerge");
@@ -1443,6 +2036,13 @@ async function main() {
   );
 
   $("#btnStartConvert").onclick = startConvert;
+  if ($("#btnFastStart")) $("#btnFastStart").onclick = startFastConvert;
+  if ($("#btnFastFull")) $("#btnFastFull").onclick = () => {
+    hideFastModule();
+    goView("home");
+  };
+  if ($("#btnFastHomeOpen")) $("#btnFastHomeOpen").onclick = () => goView("convert");
+  if ($("#btnFastHomeHide")) $("#btnFastHomeHide").onclick = () => hideFastModule();
   $("#btnStopPoll").onclick = () => {
     if (state.pollTimer) clearInterval(state.pollTimer);
     state.pollTimer = null;
@@ -1471,6 +2071,14 @@ async function main() {
     });
   }
 
+  if ($("#setNickname")) {
+    $("#setNickname").addEventListener("input", () => {
+      state.cfg = state.cfg || {};
+      state.cfg.profile_nickname = normalizeNickname($("#setNickname").value || "");
+      renderHomeGreeting();
+    });
+  }
+
   $$('input[name="topLang"]').forEach((i) =>
     i.addEventListener("change", () => {
       if (!i.checked) return;
@@ -1486,6 +2094,30 @@ async function main() {
     });
   }
 
+  if ($("#setGlowEnabled")) {
+    $("#setGlowEnabled").addEventListener("change", () => {
+      state.cfg = state.cfg || {};
+      state.cfg.highlight_enabled = $("#setGlowEnabled").checked;
+      applyGlow(state.cfg);
+    });
+  }
+
+  if ($("#setFont")) {
+    $("#setFont").addEventListener("change", () => {
+      state.cfg = state.cfg || {};
+      state.cfg.font_name = $("#setFont").value || "europe";
+      applyFont(state.cfg);
+    });
+  }
+
+  if ($("#setAnimePrikoly")) {
+    $("#setAnimePrikoly").addEventListener("change", () => {
+      state.cfg = state.cfg || {};
+      state.cfg.anime_prikoly_enabled = $("#setAnimePrikoly").checked;
+      applyAnimeArt(state.cfg);
+    });
+  }
+
   if ($("#setThemePreset")) {
     $("#setThemePreset").addEventListener("change", () => {
       const preset = $("#setThemePreset").value || "custom";
@@ -1496,6 +2128,31 @@ async function main() {
       }
       setThemeInputsEnabled(false);
       applyPresetToThemeInputs(preset);
+      state.cfg = state.cfg || {};
+      state.cfg.theme_name = preset;
+      const presetBackgrounds = {
+        one_piece: { file: "one_piece.jpg", opacity: "0.28" },
+        likvidation: { file: "likvidation_kill_the_furryebs.jpg", opacity: "0.22" },
+      };
+      const selectedPresetBackground = presetBackgrounds[preset];
+      const currentBuiltinBackground = String(state.cfg.background_builtin || "");
+      const builtinPresetFiles = Object.values(presetBackgrounds).map((x) => x.file);
+      if (selectedPresetBackground) {
+        state.cfg.background_builtin = selectedPresetBackground.file;
+        state.cfg.background_enabled = true;
+        state.cfg.background_opacity = Number(selectedPresetBackground.opacity);
+        state.cfg.background_blur = 0;
+        if ($("#setBgEnabled")) $("#setBgEnabled").checked = true;
+        if ($("#setBgOpacity")) $("#setBgOpacity").value = selectedPresetBackground.opacity;
+        if ($("#setBgBlur")) $("#setBgBlur").value = "0";
+        if ($("#setBgCurrent")) $("#setBgCurrent").textContent = selectedPresetBackground.file;
+      } else if (builtinPresetFiles.includes(currentBuiltinBackground) && !state.cfg.background_image) {
+        state.cfg.background_builtin = "";
+        state.cfg.background_enabled = false;
+        if ($("#setBgEnabled")) $("#setBgEnabled").checked = false;
+        if ($("#setBgCurrent")) $("#setBgCurrent").textContent = "—";
+      }
+      applyBackground(state.cfg);
     });
   }
 
@@ -1580,52 +2237,22 @@ async function main() {
     };
   }
 
-  if ($("#btnSaveSettings")) {
-    $("#btnSaveSettings").onclick = async () => {
-      try {
-        await saveSettings();
-        notify("success", t("toast_settings_saved"));
-      } catch (err) {
-        notify("error", `${t("toast_settings_failed")}: ${err?.message || err}`);
-      }
-    };
+  const saveButtons = ["#btnSaveSettings", "#btnSaveSettingsGeneral"];
+  for (const selector of saveButtons) {
+    const btn = $(selector);
+    if (!btn) continue;
+    btn.onclick = async () => onSaveSettingsClick("toast_settings_saved");
   }
 
-  if ($("#btnResetSettings")) {
-    $("#btnResetSettings").onclick = async () => {
-      if ($("#setLanguage")) $("#setLanguage").value = "ru";
-      if ($("#setReduceMotion")) $("#setReduceMotion").checked = false;
+  if ($("#btnApplySettings")) {
+    $("#btnApplySettings").onclick = async () => onSaveSettingsClick("toast_settings_applied");
+  }
 
-      if ($("#setThemePreset")) $("#setThemePreset").value = "niklaser";
-      setThemeInputsEnabled(false);
-      applyPresetToThemeInputs("niklaser");
-
-      if ($("#setBgEnabled")) $("#setBgEnabled").checked = false;
-      if ($("#setBgOpacity")) $("#setBgOpacity").value = "0.22";
-      if ($("#setBgBlur")) $("#setBgBlur").value = "0";
-
-      if ($("#setDefaultOutputMode")) $("#setDefaultOutputMode").value = "zip";
-      if ($("#setDefaultOutputDir")) $("#setDefaultOutputDir").value = "";
-      if ($("#setDefaultZipDir")) $("#setDefaultZipDir").value = state.info?.downloads_dir || "";
-
-      if ($("#setPreserve")) $("#setPreserve").checked = true;
-      if ($("#setUnique")) $("#setUnique").checked = true;
-      if ($("#setSkeleton")) $("#setSkeleton").checked = true;
-      if ($("#setAnimation")) $("#setAnimation").checked = false;
-
-      if ($("#setAutoDownloadZip")) $("#setAutoDownloadZip").checked = true;
-      if ($("#setLogLevel")) $("#setLogLevel").value = "INFO";
-
-      // Apply preview (not saved yet)
-      applyI18n($("#setLanguage")?.value || "ru");
-      applyMotion({ reduce_motion: $("#setReduceMotion")?.checked ?? false });
-      applyBackground({
-        ...(state.cfg || {}),
-        background_enabled: $("#setBgEnabled")?.checked ?? false,
-        background_opacity: parseFloat($("#setBgOpacity")?.value || "0.22"),
-        background_blur: parseInt($("#setBgBlur")?.value || "0", 10),
-      });
-    };
+  const resetButtons = ["#btnResetSettings", "#btnResetSettingsGeneral"];
+  for (const selector of resetButtons) {
+    const btn = $(selector);
+    if (!btn) continue;
+    btn.onclick = () => resetSettingsPreview();
   }
 
   $("#btnOpenAppDir").onclick = async () => {
@@ -1676,4 +2303,33 @@ async function main() {
   setLoading(false);
 }
 
+function maybeShowWelcome() {
+  const key = "scfile_welcome_seen";
+  if (localStorage.getItem(key)) return;
+  const overlay = $("#welcomeOverlay");
+  const ok = $("#welcomeOk");
+  if (!overlay || !ok) return;
+  const close = () => {
+    localStorage.setItem(key, "1");
+    overlay.classList.remove("active");
+  };
+  ok.onclick = close;
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+  setTimeout(() => overlay.classList.add("active"), 280);
+}
+
 main();
+
+
+
+
+
+
+
+
+
+
+
+

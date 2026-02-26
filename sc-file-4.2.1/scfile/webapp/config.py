@@ -30,11 +30,14 @@ class AppConfig:
     theme_name: str = "niklaser"
     background_enabled: bool = False
     background_image: str = ""  # filename under app_dir/ui/
+    background_builtin: str = ""  # filename under /static/backrounds/
     background_opacity: float = 0.22  # 0..1
     background_blur: int = 0  # px
+    anime_prikoly_enabled: bool = False
     reduce_motion: bool = False
     highlight_enabled: bool = True
     font_name: str = "europe"
+    map_view_blur_enabled: bool = True
 
     # Defaults for converter
     default_output_mode: str = "zip"  # "zip" | "folder"
@@ -53,6 +56,13 @@ class AppConfig:
 
     # Behavior
     auto_download_zip: bool = True
+
+    # Fast module
+    fast_console_enabled: bool = False
+
+    # Local profile / consent
+    profile_nickname: str = ""
+    activity_tracking_ack: bool = False
 
 
 def get_app_dir() -> Path:
@@ -106,7 +116,7 @@ def load_config(app_dir: Path) -> AppConfig:
         if isinstance(theme_name, str) and theme_name.strip():
             cfg.theme_name = theme_name.strip()
 
-        for key in ("background_enabled", "reduce_motion", "auto_download_zip"):
+        for key in ("background_enabled", "reduce_motion", "auto_download_zip", "map_view_blur_enabled"):
             if key in raw:
                 setattr(cfg, key, bool(raw[key]))
         if "highlight_enabled" in raw:
@@ -141,6 +151,11 @@ def load_config(app_dir: Path) -> AppConfig:
             "parse_skeleton",
             "parse_animation",
             "log_level",
+            "fast_console_enabled",
+            "background_builtin",
+            "anime_prikoly_enabled",
+            "profile_nickname",
+            "activity_tracking_ack",
         ):
             if key in raw:
                 setattr(cfg, key, raw[key])
@@ -161,6 +176,11 @@ def load_config(app_dir: Path) -> AppConfig:
 
     if cfg.font_name not in ("europe", "arial", "jetbrains"):
         cfg.font_name = "europe"
+
+    if not isinstance(cfg.profile_nickname, str):
+        cfg.profile_nickname = ""
+    cfg.profile_nickname = cfg.profile_nickname.strip()[:32]
+    cfg.activity_tracking_ack = bool(cfg.activity_tracking_ack)
 
     return cfg
 

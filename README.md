@@ -1,8 +1,7 @@
 # SC-FILE:MODDED
 
 <p align="center">
-  <img src="webapp/static/app_icon.png" alt="SC-FILE:MODDED" width="112" height="112" />
-  <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="32" height="32" />
+  <img src="webapp/static/app_icon.png" alt="SC-FILE:MODDED" width="148" height="148" />
 </p>
 
 <p align="center">
@@ -14,50 +13,70 @@
 </p>
 
 <p align="center">
-  <img src="preview.png" alt="Preview" width="900" />
+  <a href="https://github.com/onejeuu/sc-file" target="_blank" rel="noopener noreferrer">
+    <img src="webapp/static/scfile_original.svg" alt="Original SC-FILE" width="64" height="64" />
+  </a>
+  <a href="https://github.com/onejeuu/sc-mapmerge" target="_blank" rel="noopener noreferrer">
+    <img src="webapp/static/icon_scmapmerge.svg" alt="Original SC-MAPMERGE" width="64" height="64" />
+  </a>
+  <a href="https://github.com/Niklaser-Sosal/SC-FILE-MODDED" target="_blank" rel="noopener noreferrer">
+    <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="38" height="38" />
+  </a>
 </p>
 
-- [Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
+<p align="center">
+  <img src="preview.png" alt="Preview" width="1080" />
+</p>
 
-Модифицированная версия `sc-file` с современным Web UI и desktop-окном (pywebview).  
-Проект ориентирован на локальную работу: файлы обрабатываются на вашем ПК.
-В данной версии используется оригинальная сборка sc-file 4.1.2.
+<p align="center">
+  <img src="convert.png" alt="Convert" width="1080" />
+</p>
 
-Огромное спасибо автору оригинальной версии [SC-FILE](hhttps://github.com/onejeu) за открытый исходный код.
+<p align="center">
+  <img src="nastroyki.png" alt="Settings" width="1080" />
+</p>
 
+## О программе
+
+**SC-FILE:MODDED** — модифицированная версия `sc-file` с Web UI и desktop-окном на `pywebview`.
+
+Проект предназначен для локальной работы: обработка файлов выполняется на вашем ПК.  
+Интерфейс объединяет конвертацию ассетов и Map Merge в одном приложении, чтобы не переключаться между разными инструментами.
+
+В этой версии используется оригинальная база **sc-file 4.1.2** и интеграция возможностей **sc-mapmerge**.
+
+## Авторы
+
+`Niklaser` — автор модифицированной версии | `onejeuu` — автор оригинальных проектов
+
+- SC-FILE (original): https://github.com/onejeuu/sc-file
+- SC-MAPMERGE (original): https://github.com/onejeuu/sc-mapmerge
 
 ## Возможности
 
-<p align="center">
-  <img src="convert.png" alt="Convert" width="900" />
-</p>
+- Пакетная конвертация в ZIP или папку
+- Map Merge (склейка регионов карты)
+- Осмотр карты в отдельном окне
+- Осмотр моделей в отдельном окне
+- Осмотр текстур (включая DDS preview)
+- Темы, фон, шрифты, язык
+- FAST-модуль для быстрого старта
+- Локальные логи и диагностика
 
-- Пакетная конвертация ассетов в ZIP или папку
-- Map Merge (склейка регионов карты в изображения)
-- Темы, фон, язык, настройки вывода
-- Подсветка интерфейса и выбор шрифтов
-- Фоновое изображение с настройкой прозрачности/размытия
-- Логи и журнал задач
-- Desktop-окно (pywebview) или запуск в браузере
+## Оптимизация осмотров (актуально)
 
-## Структура
-
-```
-sc-file-4.2.1/          # исходники sc-file
-sc-mapmerge-2.1.1/      # исходники sc-mapmerge
-webapp/static/          # фронтенд (HTML/CSS/JS + ассеты)
-scfile-web.bat          # запуск Web UI (Windows)
-scfile-setup.bat        # установка зависимостей (Windows)
-build.py                # сборка exe через PyInstaller
-```
+- Ускорен первый рендер в осмотрах за счёт параллельной загрузки настроек
+- Уменьшена нагрузка prefetch в просмотре карты
+- Кэширован preview для DDS (повторное открытие быстрее)
+- Отложен тяжёлый рендер watermark до первого кадра интерфейса
 
 ## Быстрый старт (Windows)
 
-1. Запуск и автоустановка зависимостей:
+1. Запуск с авто-проверкой зависимостей:
    ```bat
    scfile-web.bat
    ```
-2. Если нужен принудительный setup:
+2. Принудительная переустановка зависимостей:
    ```bat
    scfile-setup.bat
    ```
@@ -70,7 +89,7 @@ sc-file-4.2.1\.venv\Scripts\python.exe -m PyInstaller scfile_webapp_entry.py --n
 
 ## Сборка (Linux)
 
-Собирать нужно **на Linux** (PyInstaller не кросс‑компилирует):
+Собирать нужно на Linux (PyInstaller не делает кросс-компиляцию Windows → Linux):
 
 ```bash
 python3.11 -m venv sc-file-4.2.1/.venv
@@ -90,33 +109,26 @@ python3.11 -m venv sc-file-4.2.1/.venv
   --collect-data scmapmerge
 ```
 
-## Шрифты
+## Кастомизация
 
-<p align="center">
-  <img src="nastroyki.png" alt="Settings" width="900" />
-</p>
+Подробное руководство вынесено в отдельный файл:
 
-Файлы лежат в `webapp/static/fonts/`:
-- `Europe-Book-Edited.otf`
-- `JetBrainsMono.ttf`
-- `JetBrainsMono-Italic.ttf`
-- `arialmt.ttf`
-
-Если шрифт не установлен или файл отсутствует, используется ближайший доступный.
+- `CUSTOMIZATION_GUIDE.md`
 
 ## Логи
 
-По умолчанию логи сохраняются в `logs/` рядом с `.bat`:
+Логи сохраняются рядом с `.bat/.exe`:
 
-```
+```text
+SC-FILE-M-Logs/
 logs/sc-file-web.log
 ```
 
-## Релизы
+## Ссылки
 
-- [GitHub Releases](https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases)
+- Releases: https://github.com/Niklaser-Sosal/SC-FILE-MODDED/releases
+- Документация оригинального SC-FILE: https://sc-file.readthedocs.io/ru/latest/index.html
 
 ## Лицензия и ответственность
 
-Проект предоставляется «как есть». Автор программы не несёт ответственности за ваши действия.
-
+Проект предоставляется «как есть». Авторы не несут ответственности за действия пользователя.

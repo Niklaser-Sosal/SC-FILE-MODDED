@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SC-FILE:MODDED • Texture View</title>
+    <link rel="icon" type="image/png" href="/static/app_icon.png" />
+    <style>
+      :root {
+        --accent: #ffd400;
+        --bg: #0b0b0b;
+        --panel: #121212;
+        --text: #fff;
+        --muted: #cfcfcf;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        color: var(--text);
+        background:
+          radial-gradient(1200px 700px at 10% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 62%),
+          var(--bg);
+        font-family: "Europe-Book-Edited", "Segoe UI", Arial, sans-serif;
+      }
+      .app {
+        height: 100%;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 8px;
+        padding: 10px;
+      }
+      .card {
+        border: 1px solid color-mix(in srgb, var(--accent) 28%, #ffffff26);
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--panel) 88%, #000 12%);
+      }
+      .head {
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .title-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .title-icon {
+        width: 30px;
+        height: 30px;
+        color: var(--accent);
+        filter: drop-shadow(0 0 8px color-mix(in srgb, var(--accent) 45%, transparent));
+      }
+      .title {
+        font-size: 20px;
+        font-weight: 900;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 8px 10px;
+      }
+      .btn {
+        all: unset;
+        cursor: pointer;
+        border: 1px solid #ffffff24;
+        border-radius: 9px;
+        padding: 8px 11px;
+        font-size: 12.5px;
+        font-weight: 700;
+        line-height: 1;
+        background: #ffffff10;
+      }
+      .btn:hover {
+        border-color: color-mix(in srgb, var(--accent) 65%, #ffffff26);
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+      }
+      .zoom-label {
+        color: var(--muted);
+        min-width: 56px;
+        text-align: right;
+        font-size: 12px;
+      }
+      .viewer-wrap {
+        position: relative;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .canvas {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        cursor: grab;
+      }
+      .canvas.dragging { cursor: grabbing; }
+      #imgTexture {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform-origin: 0 0;
+        will-change: transform;
+        user-select: none;
+        -webkit-user-drag: none;
+        image-rendering: auto;
+      }
+      .watermark {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.46;
+        background-repeat: repeat;
+        background-size: 860px 460px;
+        animation: wm-drift 26s linear infinite;
+      }
+      @keyframes wm-drift {
+        from { background-position: 0 0; }
+        to { background-position: 410px 220px; }
+      }
+      .unsupported {
+        position: absolute;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--muted);
+        background: #00000096;
+        padding: 20px;
+        font-size: 14px;
+      }
+      .unsupported.active { display: flex; }
+      .status {
+        min-height: 24px;
+        font-size: 12px;
+        color: var(--muted);
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <div class="card head">
+        <div>
+          <div class="title-row">
+            <svg class="title-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <use href="/static/icons.svg#image"></use>
+            </svg>
+            <div class="title" id="title">Осмотр текстуры</div>
+          </div>
+          <div class="subtitle" id="subtitle">Файл: —</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="actions">
+          <a class="btn" id="btnDownload" target="_blank" rel="noopener">Скачать</a>
+          <button class="btn" id="btnFit" type="button">Вписать</button>
+          <button class="btn" id="btnReset" type="button">100%</button>
+          <button class="btn" id="btnZoomOut" type="button">−</button>
+          <button class="btn" id="btnZoomIn" type="button">+</button>
+          <span class="zoom-label" id="zoomValue">100%</span>
+          <span class="zoom-label" id="metaValue"></span>
+        </div>
+      </div>
+
+      <div class="card viewer-wrap">
+        <div class="canvas" id="canvas">
+          <img id="imgTexture" alt="" draggable="false" />
+        </div>
+        <div class="watermark" id="watermark"></div>
+        <div class="unsupported" id="unsupported"></div>
+      </div>
+
+      <div class="status" id="status"></div>
+    </div>
+    <script type="module" src="/static/texture_view.js"></script>
+  </body>
+</html>
