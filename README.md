@@ -14,10 +14,10 @@
 
 <p align="center">
   <a href="https://github.com/onejeuu/sc-file" target="_blank" rel="noopener noreferrer">
-    <img src="webapp/static/scfile_original.svg" alt="Original SC-FILE" width="64" height="64" />
+    <img src="webapp/static/scfile_original.svg" alt="Original SC-FILE" width="38" height="38" />
   </a>
   <a href="https://github.com/onejeuu/sc-mapmerge" target="_blank" rel="noopener noreferrer">
-    <img src="webapp/static/icon_scmapmerge.svg" alt="Original SC-MAPMERGE" width="64" height="64" />
+    <img src="webapp/static/icon_scmapmerge.svg" alt="Original SC-MAPMERGE" width="38" height="38" />
   </a>
   <a href="https://github.com/Niklaser-Sosal/SC-FILE-MODDED" target="_blank" rel="noopener noreferrer">
     <img src="webapp/static/github-svgrepo-com.svg" alt="GitHub" width="38" height="38" />
