@@ -278,7 +278,7 @@ goto :detect_layout_loop
 :pick_scfile
 set "SCFILE_DIR="
 if exist "%~1\\sc-file\\pyproject.toml" set "SCFILE_DIR=%~1\\sc-file"
-for /f "delims=" %%D in ('dir /b /ad /o:-d "%~1\\sc-file-*" 2^>nul') do (
+for /f "delims=" %%D in ('dir /b /ad /o:-n "%~1\\sc-file-*" 2^>nul') do (
   if not defined SCFILE_DIR if exist "%~1\\%%D\\pyproject.toml" set "SCFILE_DIR=%~1\\%%D"
 )
 goto :eof

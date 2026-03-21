@@ -6,8 +6,33 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-SCFILE_DIR = ROOT / "sc-file-4.2.1"
-SCMAPMERGE_DIR = ROOT / "sc-mapmerge-2.1.1"
+
+def _find_scfile_dir(root: Path) -> Path | None:
+    direct = root / "sc-file"
+    if (direct / "pyproject.toml").exists() and (direct / "scfile").exists():
+        return direct
+
+    candidates = sorted(root.glob("sc-file-*"), reverse=True)
+    for c in candidates:
+        if (c / "pyproject.toml").exists() and (c / "scfile").exists():
+            return c
+    return None
+
+
+def _find_scmapmerge_dir(root: Path) -> Path | None:
+    direct = root / "sc-mapmerge"
+    if (direct / "scmapmerge").exists():
+        return direct
+
+    candidates = sorted(root.glob("sc-mapmerge-*"), reverse=True)
+    for c in candidates:
+        if (c / "scmapmerge").exists():
+            return c
+    return None
+
+
+SCFILE_DIR = _find_scfile_dir(ROOT) or (ROOT / "sc-file-4.3.0")
+SCMAPMERGE_DIR = _find_scmapmerge_dir(ROOT) or (ROOT / "sc-mapmerge-2.1.1")
 
 
 def _resource_base() -> Path:

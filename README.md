@@ -43,7 +43,7 @@
 Проект предназначен для локальной работы: обработка файлов выполняется на вашем ПК.  
 Интерфейс объединяет конвертацию ассетов и Map Merge в одном приложении, чтобы не переключаться между разными инструментами.
 
-В этой версии используется оригинальная база **sc-file 4.1.2** и интеграция возможностей **sc-mapmerge**.
+В этой версии используется оригинальная база **sc-file 4.3.0** и интеграция возможностей **sc-mapmerge**.
 
 ## Авторы
 
@@ -84,7 +84,7 @@
 ## Сборка EXE (Windows)
 
 ```bat
-sc-file-4.2.1\.venv\Scripts\python.exe -m PyInstaller scfile_webapp_entry.py --name SC-FILE_MODDED --clean --onefile --noconsole --paths sc-file-4.2.1 --paths sc-mapmerge-2.1.1 --add-data "webapp\static;webapp\static" -i webapp\static\app_icon.ico --hidden-import zstandard --hidden-import rich._unicode_data.unicode17-0-0 --hidden-import rich._unicode_data --collect-data rich --collect-submodules webview --collect-submodules scmapmerge --collect-data scmapmerge
+sc-file-4.3.0\.venv\Scripts\python.exe -m PyInstaller scfile_webapp_entry.py --name SC-FILE_MODDED --clean --onefile --noconsole --paths sc-file-4.3.0 --paths sc-mapmerge-2.1.1 --add-data "webapp\static;webapp\static" -i webapp\static\app_icon.ico --hidden-import zstandard --hidden-import rich._unicode_data.unicode17-0-0 --hidden-import rich._unicode_data --collect-data rich --collect-submodules webview --collect-submodules scmapmerge --collect-data scmapmerge
 ```
 
 ## Сборка (Linux)
@@ -92,12 +92,12 @@ sc-file-4.2.1\.venv\Scripts\python.exe -m PyInstaller scfile_webapp_entry.py --n
 Собирать нужно на Linux (PyInstaller не делает кросс-компиляцию Windows → Linux):
 
 ```bash
-python3.11 -m venv sc-file-4.2.1/.venv
-./sc-file-4.2.1/.venv/bin/python -m pip install -r sc-file-4.2.1/requirements.txt -r sc-file-4.2.1/requirements-web.txt
-./sc-file-4.2.1/.venv/bin/python -m PyInstaller scfile_webapp_entry.py \
+python3.11 -m venv sc-file-4.3.0/.venv
+./sc-file-4.3.0/.venv/bin/python -m pip install -r sc-file-4.3.0/requirements.txt -r sc-file-4.3.0/requirements-web.txt
+./sc-file-4.3.0/.venv/bin/python -m PyInstaller scfile_webapp_entry.py \
   --name SC-FILE_MODDED \
   --clean --onefile --noconsole \
-  --paths sc-file-4.2.1 --paths sc-mapmerge-2.1.1 \
+  --paths sc-file-4.3.0 --paths sc-mapmerge-2.1.1 \
   --add-data "webapp/static:webapp/static" \
   -i webapp/static/app_icon.ico \
   --hidden-import zstandard \

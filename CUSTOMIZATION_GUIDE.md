@@ -5,9 +5,9 @@
 ## 1) Где лежат основные файлы
 
 - Основной frontend: `webapp/static/`
-- Встроенная копия frontend (fallback внутри пакета): `sc-file-4.2.1/scfile/webapp/static/`
-- Сервер и API: `sc-file-4.2.1/scfile/webapp/server.py`
-- Desktop-окна (pywebview): `sc-file-4.2.1/scfile/webapp/runner.py`
+- Встроенная копия frontend (fallback внутри пакета): `sc-file-4.3.0/scfile/webapp/static/`
+- Сервер и API: `sc-file-4.3.0/scfile/webapp/server.py`
+- Desktop-окна (pywebview): `sc-file-4.3.0/scfile/webapp/runner.py`
 
 Важно: если меняете frontend, синхронизируйте изменения в обе папки `static`.
 
@@ -69,7 +69,7 @@
 
 ### Карта
 
-- Генерация watermark на сервере: `sc-file-4.2.1/scfile/webapp/server.py` (`_apply_map_watermark`)
+- Генерация watermark на сервере: `sc-file-4.3.0/scfile/webapp/server.py` (`_apply_map_watermark`)
 
 ### Модель
 
@@ -94,7 +94,7 @@ Preview для `.dds` идёт через отдельный API:
 
 Реализация:
 
-- `sc-file-4.2.1/scfile/webapp/server.py` (`task_texture_preview`)
+- `sc-file-4.3.0/scfile/webapp/server.py` (`task_texture_preview`)
 
 Особенности:
 
@@ -126,17 +126,17 @@ Preview для `.dds` идёт через отдельный API:
 ## 10) Рекомендованный workflow при кастомизации
 
 1. Внести правки в `webapp/static/...`
-2. Скопировать изменения в `sc-file-4.2.1/scfile/webapp/static/...`
+2. Скопировать изменения в `sc-file-4.3.0/scfile/webapp/static/...`
 3. Проверить синтаксис:
    - `node --check webapp/static/app.js`
    - `node --check webapp/static/map_view.js`
    - `node --check webapp/static/model_view.js`
    - `node --check webapp/static/texture_view.js`
 4. Для backend:
-   - `python -m py_compile sc-file-4.2.1/scfile/webapp/server.py`
+   - `python -m py_compile sc-file-4.3.0/scfile/webapp/server.py`
 
 ## 11) Что не ломать
 
-- Не удаляйте fallback-статик в `sc-file-4.2.1/scfile/webapp/static/`.
+- Не удаляйте fallback-статик в `sc-file-4.3.0/scfile/webapp/static/`.
 - Не меняйте маршруты API без синхронной правки frontend.
 - Не коммитьте временные `build/`, `dist/`, `__pycache__/` в релизный PR.

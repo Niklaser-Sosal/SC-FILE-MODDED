@@ -7,6 +7,34 @@
     <link rel="icon" type="image/png" href="/static/app_icon.png" />
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
+      @font-face {
+        font-family: "Europe-Book-Edited";
+        src: url("/static/fonts/Europe-Book-Edited.otf") format("opentype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("/static/fonts/JetBrainsMono.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("/static/fonts/JetBrainsMono-Italic.ttf") format("truetype");
+        font-style: italic;
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Arial Local";
+        src: url("/static/fonts/arialmt.ttf") format("truetype");
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+      }
       :root {
         --accent: #ffd400;
         --bg: #0b0b0b;
@@ -14,6 +42,10 @@
         --text: #ffffff;
         --muted: #cfcfcf;
         --grid-line: color-mix(in srgb, var(--accent) 55%, transparent);
+        --font: "Europe-Book-Edited", "Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui,
+          -apple-system, Roboto, "Noto Sans", "Liberation Sans", sans-serif;
+        --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
       }
       * { box-sizing: border-box; }
       html, body {
@@ -24,7 +56,7 @@
           radial-gradient(1100px 700px at 20% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 56%),
           var(--bg);
         color: var(--text);
-        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+        font-family: var(--font, "Segoe UI", system-ui, -apple-system, Arial, sans-serif);
       }
       .app {
         height: 100%;

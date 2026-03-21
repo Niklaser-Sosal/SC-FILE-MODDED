@@ -23,6 +23,7 @@ const I18N = {
     nav_logs: "Логи",
     nav_about: "О программе",
     brand_subtitle: "<b>Niklaser</b> | <b>onejeuu</b>",
+    hero_kicker: "// CONVERT ANYTHING",
 
     convert_files_title: "Файлы",
     convert_options_title: "Опции",
@@ -180,11 +181,17 @@ const I18N = {
 
     set_info_title: "Информация",
     set_version: "Версия",
+    set_runtime: "Режим",
+    set_python: "Python",
+    set_platform: "Платформа",
+    set_config: "Конфиг",
     set_downloads: "Загрузки",
     btn_open_appdir: "Папка приложения",
+    btn_open_configdir: "Папка конфига",
     btn_open_logsdir: "Папка логов",
     btn_open_downloads: "Открыть Загрузки",
     btn_open_log: "Открыть log",
+    btn_open_staticdir: "Папка статики",
 
     set_theme_title: "Тема",
     set_theme_preset: "Тема",
@@ -275,6 +282,7 @@ const I18N = {
     nav_logs: "Logs",
     nav_about: "About",
     brand_subtitle: "<b>Niklaser</b> | <b>onejeuu</b>",
+    hero_kicker: "// CONVERT ANYTHING",
 
     convert_files_title: "Files",
     convert_options_title: "Options",
@@ -432,11 +440,17 @@ const I18N = {
 
     set_info_title: "Info",
     set_version: "Version",
+    set_runtime: "Runtime",
+    set_python: "Python",
+    set_platform: "Platform",
+    set_config: "Config",
     set_downloads: "Downloads",
     btn_open_appdir: "Open app folder",
+    btn_open_configdir: "Open config folder",
     btn_open_logsdir: "Open logs folder",
     btn_open_downloads: "Open Downloads",
     btn_open_log: "Open log file",
+    btn_open_staticdir: "Open static folder",
 
     set_theme_title: "Theme",
     set_theme_preset: "Theme",
@@ -1751,6 +1765,37 @@ function setupSettingsTabs() {
   sync();
 }
 
+function setupModelFormatsSingleSelect() {
+  const items = $$(".mdlFmt");
+  if (!items.length) return;
+
+  let updating = false;
+  const setValue = (value) => {
+    updating = true;
+    items.forEach((c) => (c.checked = c.value === value));
+    updating = false;
+  };
+
+  const ensureOne = () => {
+    const checked = items.filter((c) => c.checked);
+    if (checked.length === 0) setValue("glb");
+    else if (checked.length > 1) setValue(checked[0].value);
+  };
+
+  items.forEach((c) =>
+    c.addEventListener("change", () => {
+      if (updating) return;
+      if (c.checked) {
+        setValue(c.value);
+        return;
+      }
+      ensureOne();
+    })
+  );
+
+  ensureOne();
+}
+
 function themeFromInputs() {
   return {
     accent: $("#thAccent")?.value || "#ffd400",
@@ -1945,6 +1990,7 @@ async function main() {
 
   setupNav();
   setupSettingsTabs();
+  setupModelFormatsSingleSelect();
   goView("home");
   setLoading(true, t("loading_check_server"));
 
@@ -1978,11 +2024,18 @@ async function main() {
 
     if ($("#infoVersion"))
       $("#infoVersion").textContent = `sc-file ${state.info.scfile_version} • web ${state.info.web_version}`;
+    if ($("#infoRuntime"))
+      $("#infoRuntime").textContent = state.info.runtime_frozen ? "EXE" : "DEV";
+    if ($("#infoPython")) $("#infoPython").textContent = state.info.python_version || "—";
+    if ($("#infoPlatform")) $("#infoPlatform").textContent = state.info.platform || "—";
     if ($("#infoAppDir")) $("#infoAppDir").textContent = state.info.app_dir || "—";
+    if ($("#infoConfigPath")) $("#infoConfigPath").textContent = state.info.config_path || "—";
     if ($("#infoLogFile")) $("#infoLogFile").textContent = state.info.log_path || "—";
     if ($("#infoDownloadsDir")) $("#infoDownloadsDir").textContent = state.info.downloads_dir || "—";
+    if ($("#infoStaticDir")) $("#infoStaticDir").textContent = state.info.static_dir || "—";
 
-    if ($("#appInfo")) $("#appInfo").textContent = `v${state.info.scfile_version} • Niklaser | onejeuu`;
+    if ($("#appInfo"))
+      $("#appInfo").textContent = `v${state.info.web_version || state.info.scfile_version} • Niklaser | onejeuu`;
     if (Array.isArray(state.info?.open_files) && state.info.open_files.length) {
       showFastModule(state.info.open_files);
     } else {
@@ -2276,6 +2329,27 @@ async function main() {
       await apiPostJson("/api/open", { path: logsDir });
     } catch (_) {}
   };
+
+  if ($("#btnOpenConfigDir")) {
+    $("#btnOpenConfigDir").onclick = async () => {
+      const cfgPath = state.info?.config_path;
+      const cfgDir = dirname(cfgPath);
+      if (!cfgDir) return;
+      try {
+        await apiPostJson("/api/open", { path: cfgDir });
+      } catch (_) {}
+    };
+  }
+
+  if ($("#btnOpenStaticDir")) {
+    $("#btnOpenStaticDir").onclick = async () => {
+      const staticDir = state.info?.static_dir;
+      if (!staticDir) return;
+      try {
+        await apiPostJson("/api/open", { path: staticDir });
+      } catch (_) {}
+    };
+  }
 
   if ($("#btnOpenDownloadsDir")) {
     $("#btnOpenDownloadsDir").onclick = async () => {

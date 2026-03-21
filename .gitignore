@@ -14,10 +14,14 @@ dist/
 # Logs
 logs/
 *.log
+SC-FILE-M-Logs/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Local upstream/vendor temp
+.tmp*/
 
 # IDE
 .vscode/

@@ -72,7 +72,8 @@
 
         <section class="view active" id="view-home">
           <div class="hero">
-            <div class="hero-title">SC-FILE:MODDED</div>
+            <div class="hero-kicker" data-i18n="hero_kicker">// CONVERT ANYTHING</div>
+            <div class="hero-title hero-title-big">SC-FILE:MODDED</div>
             <div class="hero-sub" data-i18n="home_sub">
               Конвертация ассетов STALCRAFT:X в стандартные форматы с логами, пакетной обработкой и кастомизацией.
             </div>
@@ -603,9 +604,17 @@
                 </div>
 
                 <div class="card">
-                  <div class="card-title" data-i18n="set_info_title">Информация</div>
+                  <div class="card-title with-icon">
+                    <svg class="icon"><use href="/static/icons.svg#info"></use></svg>
+                    <span data-i18n="set_info_title">Информация</span>
+                  </div>
                   <div class="hint">
                     <span data-i18n="set_version">Версия</span>: <span class="mono" id="infoVersion">—</span><br />
+                    <span data-i18n="set_runtime">Режим</span>: <span class="mono" id="infoRuntime">—</span><br />
+                    <span data-i18n="set_python">Python</span>: <span class="mono" id="infoPython">—</span><br />
+                    <span data-i18n="set_platform">Платформа</span>: <span class="mono" id="infoPlatform">—</span><br />
+                    <span data-i18n="set_config">Конфиг</span>: <span class="mono" id="infoConfigPath">—</span><br />
+                    Static: <span class="mono" id="infoStaticDir">—</span><br />
                     App dir: <span class="mono" id="infoAppDir">—</span><br />
                     Log file: <span class="mono" id="infoLogFile">—</span><br />
                     <span data-i18n="set_downloads">Загрузки</span>: <span class="mono" id="infoDownloadsDir">—</span>
@@ -615,6 +624,10 @@
                     <button class="btn" id="btnOpenAppDir">
                       <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
                       <span data-i18n="btn_open_appdir">Папка приложения</span>
+                    </button>
+                    <button class="btn ghost" id="btnOpenConfigDir">
+                      <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                      <span data-i18n="btn_open_configdir">Папка конфига</span>
                     </button>
                     <button class="btn ghost" id="btnOpenLogsDir">
                       <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
@@ -627,6 +640,10 @@
                     <button class="btn ghost" id="btnOpenLogFile">
                       <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
                       <span data-i18n="btn_open_log">Открыть log</span>
+                    </button>
+                    <button class="btn ghost" id="btnOpenStaticDir">
+                      <svg class="icon"><use href="/static/icons.svg#open"></use></svg>
+                      <span data-i18n="btn_open_staticdir">Папка статики</span>
                     </button>
                   </div>
                   <div class="divider"></div>

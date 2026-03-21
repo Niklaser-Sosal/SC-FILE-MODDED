@@ -152,7 +152,7 @@ if exist "%~1\\sc-file\\pyproject.toml" (
   set "SCFILE_DIR=%~1\\sc-file"
   goto :eof
 )
-for /f "delims=" %%D in ('dir /b /ad /o:-d "%~1\\sc-file-*" 2^>nul') do (
+for /f "delims=" %%D in ('dir /b /ad /o:-n "%~1\\sc-file-*" 2^>nul') do (
   if exist "%~1\\%%D\\pyproject.toml" (
     set "SCFILE_DIR=%~1\\%%D"
     goto :eof

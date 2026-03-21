@@ -98,6 +98,44 @@ function decodeWatermarkText() {
   return "SC-FILE:MODDED • MODEL VIEW";
 }
 
+function applyFontName(fontName) {
+  const name = String(fontName || "europe").toLowerCase();
+  const root = document.documentElement;
+
+  if (name === "arial") {
+    root.style.setProperty(
+      "--font",
+      '"Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans", "Liberation Sans", sans-serif'
+    );
+    root.style.setProperty(
+      "--mono",
+      '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    );
+    return;
+  }
+
+  if (name === "jetbrains") {
+    root.style.setProperty(
+      "--font",
+      '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    );
+    root.style.setProperty(
+      "--mono",
+      '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    );
+    return;
+  }
+
+  root.style.setProperty(
+    "--font",
+    '"Europe-Book-Edited", "Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans", "Liberation Sans", sans-serif'
+  );
+  root.style.setProperty(
+    "--mono",
+    '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+  );
+}
+
 function buildWatermarkPattern() {
   const lineMain = decodeWatermarkText();
   const lineSub = "Niklaser | onejeuu";
@@ -107,10 +145,18 @@ function buildWatermarkPattern() {
   const ctx = canvas.getContext("2d");
   if (!ctx) return "";
 
+  const computed = getComputedStyle(document.documentElement);
+  const mainFamily =
+    computed.getPropertyValue("--font").trim() ||
+    '"Europe-Book-Edited", "Arial Local", Arial, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, -apple-system, Roboto, "Noto Sans", "Liberation Sans", sans-serif';
+  const subFamily =
+    computed.getPropertyValue("--mono").trim() ||
+    '"JetBrains Mono", ui-monospace, "Cascadia Mono", "Cascadia Code", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+
   const fitFont = (text, maxWidth, startSize, minSize, weight) => {
     let size = startSize;
     while (size > minSize) {
-      ctx.font = `${weight} ${size}px "JetBrains Mono", "Europe-Book-Edited", Arial, sans-serif`;
+      ctx.font = `${weight} ${size}px ${mainFamily}`;
       if (ctx.measureText(text).width <= maxWidth) return size;
       size -= 1;
     }
@@ -130,13 +176,13 @@ function buildWatermarkPattern() {
   const subSize = fitFont(lineSub, maxWidth, 32, 18, 700);
 
   const drawBlock = (y) => {
-    ctx.font = `800 ${mainSize}px "JetBrains Mono", "Europe-Book-Edited", Arial, sans-serif`;
+    ctx.font = `800 ${mainSize}px ${mainFamily}`;
     ctx.lineWidth = Math.max(1.4, mainSize / 18);
     ctx.strokeText(lineMain, 0, y);
     ctx.fillText(lineMain, 0, y);
 
     const subY = y + Math.round(mainSize * 1.02);
-    ctx.font = `700 ${subSize}px "JetBrains Mono", "Europe-Book-Edited", Arial, sans-serif`;
+    ctx.font = `700 ${subSize}px ${subFamily}`;
     ctx.lineWidth = Math.max(1.2, subSize / 20);
     ctx.strokeText(lineSub, 0, subY);
     ctx.fillText(lineSub, 0, subY);
@@ -393,6 +439,7 @@ async function init() {
   parseQuery();
   applyI18n();
   setStatus(t("loading"));
+  applyFontName("europe");
 
   if (!state.taskId || !state.relPath) {
     setStatus(t("open_failed"));
@@ -402,6 +449,7 @@ async function init() {
   const settingsPromise = apiGet("/api/settings")
     .then((cfg) => {
       if (cfg?.theme) applyTheme(cfg.theme);
+      if (cfg?.font_name) applyFontName(cfg.font_name);
       if (cfg?.language && !new URLSearchParams(window.location.search).get("lang")) {
         state.lang = normalizeLang(cfg.language);
         applyI18n();
@@ -416,10 +464,10 @@ async function init() {
 
   if ($("#subtitle")) $("#subtitle").textContent = `${t("subtitle")}: ${fileName}`;
   if ($("#btnDownload")) $("#btnDownload").href = fileUrl;
-  requestAnimationFrame(() => {
+  const applyWm = () => {
     const wm = $("#watermark");
     if (wm) wm.style.backgroundImage = buildWatermarkPattern();
-  });
+  };
 
   const viewer = $("#viewer");
   const unsupported = $("#unsupported");
@@ -457,6 +505,12 @@ async function init() {
   applyRotationSpeed();
 
   await settingsPromise;
+
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(() => requestAnimationFrame(applyWm)).catch(() => requestAnimationFrame(applyWm));
+  } else {
+    requestAnimationFrame(applyWm);
+  }
 }
 
 init();
