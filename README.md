@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.1-yellow?style=flat-square" />
+  <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-yellow?style=flat-square" />
   <img alt="Platform" src="https://img.shields.io/badge/platform-windows%20%7C%20linux-black?style=flat-square" />
   <img alt="UI" src="https://img.shields.io/badge/ui-web%20%7C%20pywebview-yellow?style=flat-square" />
   <img alt="Build" src="https://img.shields.io/badge/build-pyinstaller-black?style=flat-square" />
